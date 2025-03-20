@@ -106,4 +106,12 @@ class Address extends Model implements KeyValueOptions
             ->preload()
             ->required();
     }
+
+    /**
+     * Retrieve the full address as a formatted string
+     */
+    public function getFullAddress(): string
+    {
+        return "{$this->street}, {$this->zip} {$this->city}, {$this->country->countryName()}";
+    }
 }

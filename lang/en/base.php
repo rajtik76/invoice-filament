@@ -63,6 +63,7 @@ return [
     'edit_report' => 'Edit report',
     'create_report' => 'Create report',
     'deactivate_task' => 'Deactivate task',
+    'pdf' => 'PDF',
 
     'is_active' => 'Active',
 

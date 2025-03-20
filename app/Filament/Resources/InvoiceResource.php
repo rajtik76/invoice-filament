@@ -48,7 +48,7 @@ class InvoiceResource extends Resource
                             ->createOptionUsing(function (array $data): void {
                                 ContractResource::createRecordForCurrentUser($data);
                             })
-                            ->createOptionAction(fn (Action $action) => $action->slideOver())
+                            ->createOptionAction(fn(Action $action) => $action->slideOver())
                             ->searchable()
                             ->preload()
                             ->required(),
@@ -120,8 +120,8 @@ class InvoiceResource extends Resource
                 Tables\Columns\TextColumn::make('total_amount')
                     ->label(trans('base.amount'))
                     ->money(
-                        currency: fn (Invoice $invoice) => $invoice->contract->currency->value,
-                        locale: fn (Invoice $invoice) => $invoice->contract->currency === CurrencyEnum::EUR ? 'de' : 'cs'
+                        currency: fn(Invoice $invoice) => $invoice->contract->currency->value,
+                        locale: fn(Invoice $invoice) => $invoice->contract->currency === CurrencyEnum::EUR ? 'de' : 'cs'
                     ),
             ])
             ->filters([
@@ -131,10 +131,10 @@ class InvoiceResource extends Resource
                 Tables\Actions\EditAction::make('edit')
                     ->modalHeading(trans('base.edit_invoice'))
                     ->slideOver(),
-                Tables\Actions\Action::make('show')
-                    ->label(trans('base.show'))
-                    ->icon('heroicon-o-eye')
-                    ->url('#')
+                Tables\Actions\Action::make('pdf')
+                    ->label(trans('base.pdf'))
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->url(fn(Invoice $record): string => route('invoice.pdf', ['invoice' => $record->id]))
                     ->openUrlInNewTab(),
             ])
             ->bulkActions([
@@ -142,13 +142,6 @@ class InvoiceResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array

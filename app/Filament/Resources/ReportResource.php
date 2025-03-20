@@ -40,7 +40,7 @@ class ReportResource extends Resource
                     ->columnSpanFull()
                     ->required()
                     ->rules([
-                        fn (Forms\Get $get): Closure => function ($attribute, $value, Closure $fail) use ($get): void {
+                        fn(Forms\Get $get): Closure => function ($attribute, $value, Closure $fail) use ($get): void {
                             if (
                                 Report::where('user_id', auth()->id())
                                     ->where('year', $get('year'))
@@ -92,14 +92,15 @@ class ReportResource extends Resource
                     ->label(trans('base.hours'))
                     ->numeric(decimalPlaces: 1)
                     ->getStateUsing(function (Report $record) {
-                        return floatval(collect($record->content)->sum(fn ($item) => collect($item)->sum('hours')));
+                        return floatval(collect($record->content)->sum(fn($item) => collect($item)->sum('hours')));
                     }),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->slideOver(),
                 Tables\Actions\Action::make('show')
                     ->label(trans('base.show'))
                     ->icon('heroicon-o-eye')
