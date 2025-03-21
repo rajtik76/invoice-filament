@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Response;
+use function Filament\authorize;
 
 class InvoicePdfController extends Controller
 {
-    public function __invoke(Invoice $invoice)
+    public function __invoke(Invoice $invoice): Response
     {
+        authorize('view', $invoice);
+
         $supplier = $invoice->contract->supplier;
         $customer = $invoice->contract->customer;
         $bank = $invoice->contract->supplier->bankAccount;

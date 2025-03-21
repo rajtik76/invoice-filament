@@ -101,10 +101,10 @@ class ReportResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->slideOver(),
-                Tables\Actions\Action::make('show')
-                    ->label(trans('base.show'))
-                    ->icon('heroicon-o-eye')
-                    ->url('#')
+                Tables\Actions\Action::make('pdf')
+                    ->label(trans('base.pdf'))
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->url(fn(Report $record): string => route('report.pdf', ['report' => $record->id]))
                     ->openUrlInNewTab(),
             ])
             ->bulkActions([
