@@ -22,8 +22,8 @@ console_command = 'php /var/www/html/artisan tinker'
   SESSION_DRIVER = 'cookie'
   SESSION_SECURE_COOKIE = 'true'
   CACHE_STORE = 'file'
-  APP_URL = 'https://invoice-filament.fly.dev/'
-  ASSET_URL = 'https://invoice-filament.fly.dev/'
+  APP_URL = 'https://invoice.rajtik.com/'
+  ASSET_URL = 'https://invoice.rajtik.com/'
 
 [[mounts]]
   source = 'storage1'
