@@ -146,8 +146,6 @@
         </span>
         VAT #: {{ $supplier['vat'] }}<br>
         Registration #: {{ $supplier['registration'] }}<br>
-        Email: {{ $supplier['email'] }}<br>
-        Phone: {{ $supplier['phone'] }}
     </div>
 
     <!-- Customer -->

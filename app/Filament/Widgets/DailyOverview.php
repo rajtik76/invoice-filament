@@ -10,7 +10,7 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class DailyOverview extends BaseWidget
 {
-    protected int | string | array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 'full';
 
     public function table(Table $table): Table
     {
@@ -35,17 +35,17 @@ class DailyOverview extends BaseWidget
                     ->numeric(1),
                 TextColumn::make('overviews')
                     ->label('Spent hours')
-                    ->getStateUsing(function ($record): ?string {
-                        return once(fn(): string => TaskHour::with('task')
+                    ->getStateUsing(function ($record): string {
+                        return once(fn (): string => TaskHour::with('task')
                             ->where('user_id', auth()->id())
                             ->whereRaw('DATE(date) = ?', $record->day)
                             ->get()
-                            ->map(fn(TaskHour $taskHour): string => "{$taskHour->task->name} - {$taskHour->hours}h")
+                            ->map(fn (TaskHour $taskHour): string => "{$taskHour->task->name} - {$taskHour->hours}h")
                             ->implode(', '));
                     })
                     ->badge()
                     ->color(Color::Green)
-                    ->separator(',')
+                    ->separator(','),
             ]);
     }
 }

@@ -14,6 +14,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property Address $address
+ * @property BankAccount $bankAccount
+ */
 class Supplier extends Model
 {
     use HasCurrentUserScope, HasFactory;

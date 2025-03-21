@@ -17,6 +17,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property Customer $customer
+ * @property Supplier $supplier
+ */
 class Contract extends Model implements KeyValueOptions
 {
     use HasCurrentUserScope, HasFactory;

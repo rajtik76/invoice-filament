@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property Address $address
+ */
 class Customer extends Model implements KeyValueOptions
 {
     use HasCurrentUserScope, HasFactory;

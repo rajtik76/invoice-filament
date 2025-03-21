@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Http\Controllers;
@@ -6,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Response;
+
 use function Filament\authorize;
 
 class InvoicePdfController extends Controller
@@ -37,8 +39,6 @@ class InvoicePdfController extends Controller
                 'address3' => $customer->address->country->countryName(),
                 'vat' => $customer->vat_number,
                 'registration' => $customer->registration_number,
-                'email' => $customer->email,
-                'phone' => $customer->phone,
             ],
 
             'invoice' => [
