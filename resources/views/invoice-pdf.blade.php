@@ -196,8 +196,8 @@
                         {{ $item['name'] }}
                     @endif
                 </td>
-                <td class="text-right">{{ $item['hours'] }} hours</td>
-                <td class="text-right">{{ $invoice['unit_price'] }} {{ $invoice['currency'] }}</td>
+                <td class="text-right">{{ number_format($item['hours'], 1) }} hours</td>
+                <td class="text-right">{{ number_format($invoice['unit_price'], 2) }} {{ $invoice['currency'] }}</td>
                 <td class="text-right">{{ number_format($item['amount'], 2) }} {{ $invoice['currency'] }}</td>
             </tr>
         @endforeach
