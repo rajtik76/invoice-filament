@@ -19,9 +19,9 @@ class SupplierFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => fn () => User::factory(),
-            'address_id' => fn (array $attributes) => Address::factory()->create(['user_id' => $attributes['user_id']]),
-            'bank_account_id' => fn (array $attributes) => BankAccount::factory()->create(['user_id' => $attributes['user_id']]),
+            'user_id' => User::factory(),
+            'address_id' => Address::factory(),
+            'bank_account_id' => BankAccount::factory(),
             'name' => $this->faker->company(),
             'registration_number' => $this->faker->numerify(Str::repeat('#', 10)),
             'vat_number' => $this->faker->regexify('[A-Z]{2}[0-9]{10}'),

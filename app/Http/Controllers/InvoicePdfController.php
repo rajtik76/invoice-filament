@@ -50,7 +50,7 @@ class InvoicePdfController extends Controller
                 'subtotal' => $invoice->total_amount,
                 'totalAmount' => $invoice->total_amount,
                 'items' => $invoice->content,
-                'isRPDP' => true, // Add this flag to indicate Reverse Charge applies
+                'isReverseCharge' => $invoice->contract->reverse_charge,
                 'currency' => $invoice->contract->currency->getCurrencySymbol(),
             ],
 

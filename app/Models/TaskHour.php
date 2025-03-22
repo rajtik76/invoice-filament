@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * @property User $user
  * @property Task $task
  */
 class TaskHour extends Model
@@ -21,6 +22,11 @@ class TaskHour extends Model
     protected $casts = [
         'date' => 'date',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function task(): BelongsTo
     {

@@ -17,8 +17,8 @@ class ReportFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => fn () => User::factory(),
-            'contract_id' => fn () => Contract::factory(),
+            'user_id' => User::factory(),
+            'contract_id' => Contract::factory(),
             'year' => $this->faker->numberBetween(2000, now()->subYear()->year),
             'month' => $this->faker->month,
             'content' => [],

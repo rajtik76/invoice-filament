@@ -19,12 +19,13 @@ class ContractFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => fn () => User::factory(),
-            'customer_id' => fn (array $attributes) => Customer::factory()->create(['user_id' => $attributes['user_id']]),
-            'supplier_id' => fn (array $attributes) => Supplier::factory()->create(['user_id' => $attributes['user_id']]),
-            'name' => $this->faker->slug(4),
+            'user_id' => User::factory(),
+            'customer_id' => Customer::factory(),
+            'supplier_id' => Supplier::factory(),
+            'name' => fn (array $attributes) => Customer::find($attributes['customer_id'])->name . ' contract',
             'signed_at' => $this->faker->unique()->dateTimeBetween(),
             'currency' => $this->faker->randomElement(Currency::cases()),
+            'reverse_charge' => $this->faker->boolean(),
             'price_per_hour' => fn (array $attributes) => $attributes['currency'] === Currency::CZK
                 ? $this->faker->randomFloat(2, 300, 1000)
                 : $this->faker->randomFloat(2, 10, 50),

@@ -10,4 +10,11 @@ class GeneratorService
     {
         return str()->slug(implode(' ', $title)) . $suffix;
     }
+
+    public static function getInitials(string $name): string
+    {
+        preg_match_all('/\b\w/u', $name, $matches);
+
+        return strtoupper(implode('', $matches[0]));
+    }
 }

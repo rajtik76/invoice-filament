@@ -12,18 +12,20 @@ class TaskSeeder extends Seeder
 {
     public function run(): void
     {
-        foreach (Contract::all() as $contract) {
-            // each contract have max 10 tasks
-            Task::factory(fake()->numberBetween(1, 10))->create([
-                'user_id' => $contract->user_id,
-                'contract_id' => $contract->id,
-            ]);
-            // insert at least 1 inactive task
-            Task::factory(fake()->numberBetween(1, 3))->create([
-                'user_id' => $contract->user_id,
-                'contract_id' => $contract->id,
-                'active' => false,
-            ]);
+        foreach (Contract::with('user')->get() as $contract) {
+            // Each contract have 10 tasks
+            Task::factory()
+                ->count(10)
+                ->recycle([$contract->user, $contract])
+                ->active()
+                ->create();
+
+            // Insert 3 inactive task
+            Task::factory()
+                ->count(3)
+                ->recycle([$contract->user, $contract])
+                ->inactive()
+                ->create();
         }
     }
 }

@@ -11,8 +11,6 @@ use Illuminate\Support\Collection;
 
 class ReportSeeder extends Seeder
 {
-    protected array $ttt = [];
-
     public function run(): void
     {
         TaskHour::join('tasks', 'tasks.id', '=', 'task_hours.task_id')
@@ -28,24 +26,17 @@ class ReportSeeder extends Seeder
                 fn (Collection $taskHour, $contractId) => $taskHour->each(
                     fn (Collection $contractCollection, $userId) => $contractCollection->each(
                         fn (Collection $yearCollection, $year) => $yearCollection->each(
-                            fn (Collection $monthCollection, $month) => $this->ttt[] = [
-                                'contract_id' => intval($contractId),
-                                'user_id' => intval($userId),
-                                'year' => intval($year),
-                                'month' => intval($month),
-                            ]
+                            function (Collection $monthCollection, $month) use ($contractId, $userId, $year) {
+                                Report::factory()->create([
+                                    'user_id' => $userId,
+                                    'contract_id' => $contractId,
+                                    'year' => $year,
+                                    'month' => $month,
+                                ]);
+                            }
                         )
                     )
                 )
             );
-
-        foreach ($this->ttt as $taskHour) {
-            Report::factory()->create([
-                'user_id' => $taskHour['user_id'],
-                'contract_id' => $taskHour['contract_id'],
-                'year' => $taskHour['year'],
-                'month' => $taskHour['month'],
-            ]);
-        }
     }
 }

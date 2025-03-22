@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
+ * @property User $user
  * @property Customer $customer
  * @property Supplier $supplier
  */
@@ -43,6 +44,11 @@ class Contract extends Model implements KeyValueOptions
             ->keyBy('id')
             ->map(fn (Contract $contract) => $contract->name)
             ->toArray();
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function customer(): BelongsTo

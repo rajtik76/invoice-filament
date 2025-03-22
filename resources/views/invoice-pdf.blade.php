@@ -230,7 +230,7 @@
     </table>
 
     <!-- Reverse Charge Notice -->
-    @if ($invoice['isRPDP'])
+    @if ($invoice['isReverseCharge'])
         <div class="reverse-charge">
             Reverse charge – VAT to be paid by the customer under local tax laws.
         </div>
