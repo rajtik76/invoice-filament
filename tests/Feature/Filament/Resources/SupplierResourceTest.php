@@ -1,14 +1,14 @@
 <?php
 
 use App\Filament\Resources\SupplierResource\Pages\ListSuppliers;
+use App\Models\Address;
 use App\Models\BankAccount;
 use App\Models\Supplier;
+use App\Models\User;
 use Filament\Tables\Actions\EditAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use function Pest\Laravel\actingAs;
+
 use function Pest\Livewire\livewire;
-use App\Models\Address;
-use App\Models\User;
 
 uses(RefreshDatabase::class);
 
@@ -29,12 +29,12 @@ test('can edit supplier', function () {
     $supplier = Supplier::factory()
         ->recycle($this->user)
         ->create([
-        'name' => 'Joe Doe',
-        'email' => 'unit@test.local',
-        'phone' => '1234567890',
-        'registration_number' => '9876543210',
-        'vat_number' => 'DE123456789',
-    ]);
+            'name' => 'Joe Doe',
+            'email' => 'unit@test.local',
+            'phone' => '1234567890',
+            'registration_number' => '9876543210',
+            'vat_number' => 'DE123456789',
+        ]);
 
     livewire(ListSuppliers::class)
         ->mountTableAction(EditAction::class, $supplier)

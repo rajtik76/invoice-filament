@@ -1,27 +1,21 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
 use App\Models\Report;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function Filament\authorize;
 
 class ReportPdfController extends Controller
 {
-    public function __invoke(Report $report): Response
+    public function __invoke(Report $report, Request $request): Response
     {
-        authorize('view', $report);
+        $request->user()->can('view', $report);
 
-        $data = [
-            'year' => $report->year,
-            'month' => $report->month,
-            'customer' => $report->contract->customer,
-            'spend_hours' => $report->content,
-        ];
-
-        $pdf = PDF::loadView('report-pdf', $data);
+        $pdf = PDF::loadView('report-pdf', $report->load(['contract.customer'])->toArray());
 
         return $pdf->stream('report.pdf');
     }

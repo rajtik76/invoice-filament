@@ -48,7 +48,7 @@ class InvoicePdfController extends Controller
                 'unit_price' => $invoice->contract->price_per_hour,
                 'subtotal' => $invoice->total_amount,
                 'totalAmount' => $invoice->total_amount,
-                'items' => collect($invoice->content),
+                'items' => $invoice->content,
                 'isRPDP' => true, // Add this flag to indicate Reverse Charge applies
                 'currency' => $invoice->contract->currency->getCurrencySymbol(),
             ],

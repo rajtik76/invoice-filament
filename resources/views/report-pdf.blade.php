@@ -77,10 +77,10 @@
 <body>
 <div class="header">
     Task Hours Report {{ $year }}/{{ $month }}<br>
-    <span style="font-size: 10px;">{{ $customer->name }}</span>
+    <span style="font-size: 10px;">{{ data_get($contract, 'customer.name') }}</span>
 </div>
 
-@foreach ($spend_hours as $date => $tasks)
+@foreach ($content as $date => $tasks)
     <div class="table-container">
         <div class="new-day-header">{{ $date }}</div>
         <table class="table">
