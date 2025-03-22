@@ -17,6 +17,8 @@ class InvoicePdfController extends Controller
     {
         authorize('view', $invoice);
 
+        $invoice->load(['contract.customer', 'contract.supplier.bankAccount']);
+
         $supplier = $invoice->contract->supplier;
         $customer = $invoice->contract->customer;
         $bank = $invoice->contract->supplier->bankAccount;
