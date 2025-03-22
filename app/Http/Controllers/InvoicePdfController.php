@@ -19,8 +19,6 @@ class InvoicePdfController extends Controller
 
         $invoice->load(['contract.customer', 'contract.supplier.bankAccount']);
 
-        logger($invoice->contract->attributesToArray());
-
         $supplier = $invoice->contract->supplier;
         $customer = $invoice->contract->customer;
         $bank = $invoice->contract->supplier->bankAccount;
