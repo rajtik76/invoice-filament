@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Hours Report</title>
+    <title>{{ __('pdf.report.title') }}</title>
     <style>
         /* Adjusted styles with minimized margins and proper page handling */
         body {
@@ -76,7 +76,7 @@
 
 <body>
 <div class="header">
-    Task Hours Report {{ $year }}/{{ $month }}<br>
+    {{ __('pdf.report.title') }} {{ $year }}/{{ $month }}<br>
     <span style="font-size: 10px;">{{ data_get($contract, 'customer.name') }}</span>
 </div>
 
@@ -86,9 +86,9 @@
         <table class="table">
             <thead>
             <tr>
-                <th>Task</th>
-                <th>Hours</th>
-                <th>Comment</th>
+                <th>{{ __('base.task') }}</th>
+                <th>{{ __('base.hours') }}</th>
+                <th>{{ __('base.comment') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -108,7 +108,7 @@
             </tbody>
             <tfoot>
             <tr>
-                <th>TOTAL</th>
+                <th>{{ strtoupper(__('pdf.report.total')) }}</th>
                 <th>{{ number_format(collect($tasks)->sum('hours'), 1) }}</th>
                 <th></th>
             </tr>

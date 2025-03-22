@@ -15,11 +15,11 @@ return [
     'registration_number' => 'Registration Number',
     'year' => 'Year',
     'month' => 'Month',
-    'issue_date' => 'Issue date',
+    'issue_date' => 'Invoice date',
     'due_date' => 'Due date',
     'amount' => 'Amount',
     'name' => 'Name',
-    'vat' => 'VAT',
+    'vat' => 'VAT No.',
     'phone' => 'Phone',
     'street' => 'Street',
     'city' => 'City',
@@ -42,7 +42,7 @@ return [
     'show' => 'Show',
     'description' => 'Description',
     'subtotal' => 'Subtotal',
-    'registration' => 'Registration',
+    'registration' => 'Registration No.',
     'reverse_charge' => 'Reverse-charge',
 
     'edit_invoice' => 'Edit invoice',
@@ -79,8 +79,8 @@ return [
     'unit_price' => 'Unit price',
     'quantity' => 'Quantity',
     'iban' => 'IBAN',
-    'swift' => 'SWIFT',
-    'reference_id' => 'Reference ID',
+    'swift' => 'SWIFT/BIC',
+    'reference_id' => 'Reference (END2END) ID',
 
     'country_name' => [
         'germany' => 'Germany',

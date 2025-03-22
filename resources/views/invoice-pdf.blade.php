@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice</title>
+    <title>{{ __('base.invoice') }}</title>
 
     <style>
         body {
@@ -133,35 +133,35 @@
 </head>
 <body>
 <div class="invoice-box">
-    <h1>Invoice</h1>
+    <h1>{{ __('base.invoice') }}</h1>
 
     <!-- Supplier -->
     <div class="frame" style="margin-right: 1%;">
-        <span class="icon-title">Supplier</span>
+        <span class="icon-title">{{ __('base.supplier') }}</span>
         <strong>{{ $supplier['name'] }}</strong><br>
         <span class="address">
             {{ $supplier['address1'] }}<br>
             {{ $supplier['address2'] }}<br>
             {{ $supplier['address3'] }}<br>
         </span>
-        VAT #: {{ $supplier['vat'] }}<br>
-        Registration #: {{ $supplier['registration'] }}<br>
-        Email: {{ $supplier['email'] }}<br>
-        Phone: {{ $supplier['phone'] }}
+        {{ __('base.vat') }}: {{ $supplier['vat'] }}<br>
+        {{ __('base.registration') }}: {{ $supplier['registration'] }}<br>
+        {{ __('base.email') }}: {{ $supplier['email'] }}<br>
+        {{ __('base.phone') }}: {{ $supplier['phone'] }}
     </div>
 
     <!-- Customer -->
     <div class="frame">
-        <span class="icon-title">Customer</span>
+        <span class="icon-title">{{ __('base.customer') }}</span>
         <strong>{{ $customer['name'] }}</strong><br>
         <span class="address">
             {{ $customer['address1'] }}<br>
             {{ $customer['address2'] }}<br>
             {{ $customer['address3'] }}<br>
         </span>
-        VAT #: {{ $customer['vat'] }}<br>
+        {{ __('base.vat') }}: {{ $customer['vat'] }}<br>
         @if ($customer['registration'])
-            Registration #: {{ $customer['registration'] }}<br>
+            {{ __('base.registration') }}: {{ $customer['registration'] }}<br>
         @else
             &nbsp;<br>
         @endif
@@ -173,11 +173,11 @@
     <table>
         <tr>
             <td>
-                <strong>Invoice #:</strong> {{ $invoice['number'] }}<br>
-                <strong>Invoice Date:</strong> {{ $invoice['date'] }}
+                <strong>{{ __('base.invoice') }} #:</strong> {{ $invoice['number'] }}<br>
+                <strong>{{ __('base.issue_date') }}:</strong> {{ $invoice['date'] }}
             </td>
             <td class="text-right">
-                <strong>Due Date:</strong> <span class="highlight">{{ $invoice['dueDate'] }}</span>
+                <strong>{{ __('base.due_date') }}:</strong> <span class="highlight">{{ $invoice['dueDate'] }}</span>
             </td>
         </tr>
     </table>
@@ -186,10 +186,10 @@
     <table>
         <thead>
         <tr>
-            <th>Description</th>
-            <th class="text-right">Quantity</th>
-            <th class="text-right">Unit Price</th>
-            <th class="text-right">Amount</th>
+            <th>{{ __('base.description') }}</th>
+            <th class="text-right">{{ __('base.quantity') }}</th>
+            <th class="text-right">{{ __('base.unit_price') }}</th>
+            <th class="text-right">{{ __('base.amount') }}</th>
         </tr>
         </thead>
         <tbody>
@@ -202,7 +202,7 @@
                         {{ $item['name'] }}
                     @endif
                 </td>
-                <td class="text-right">{{ number_format($item['hours'], 1) }} hours</td>
+                <td class="text-right">{{ number_format($item['hours'], 1) }} {{ __('base.hours') }}</td>
                 <td class="text-right">{{ number_format($invoice['unit_price'], 2) }} {{ $invoice['currency'] }}</td>
                 <td class="text-right">{{ number_format($item['amount'], 2) }} {{ $invoice['currency'] }}</td>
             </tr>
@@ -215,43 +215,46 @@
         @if (isset($invoice['tax']))
             <tr>
                 <td class="text-right">
-                    <strong>Subtotal: {{ number_format($invoice['subtotal'], 2) }} {{ $invoice['currency'] }}</strong>
+                    <strong>{{ __('base.subtotal') }}
+                        : {{ number_format($invoice['subtotal'], 2) }} {{ $invoice['currency'] }}</strong>
                 </td>
             </tr>
             <tr>
                 <td class="text-right">
-                    <strong>Tax: {{ number_format($invoice['tax'], 2) }} {{ $invoice['currency'] }}</strong></td>
+                    <strong>{{ __('pdf.invoice.tax') }}
+                        : {{ number_format($invoice['tax'], 2) }} {{ $invoice['currency'] }}</strong></td>
             </tr>
         @endif
         <tr class="total-row">
             <th class="text-right">
-                <strong>Total: {{ number_format($invoice['totalAmount'], 2) }} {{ $invoice['currency'] }}</strong></th>
+                <strong>{{ __('base.total') }}
+                    : {{ number_format($invoice['totalAmount'], 2) }} {{ $invoice['currency'] }}</strong></th>
         </tr>
     </table>
 
     <!-- Reverse Charge Notice -->
     @if ($invoice['isReverseCharge'])
         <div class="reverse-charge">
-            Reverse charge – VAT to be paid by the customer under local tax laws.
+            {{ __('pdf.invoice.reverse_charge') }}
         </div>
     @endif
 
     <!-- Payment Information -->
     <div class="payment-info">
         <h3 style="font-size: 14px; margin: 0 0 8px; color: #2A3F54;">Payment Details</h3>
-        Bank Name: {{ $bank['name'] }}<br>
-        Account: {{ $bank['account'] }}/{{ $bank['code'] }}<br>
+        {{ __('base.bank_name') }}: {{ $bank['name'] }}<br>
+        {{ __('base.bank_account') }}: {{ $bank['account'] }}/{{ $bank['code'] }}<br>
         <span class="payment-highlight">
-            IBAN: {{ $bank['iban'] }}<br>
-            SWIFT/BIC: {{ $bank['swift'] }}<br>
-            Payment Reference: {{ $invoice['number'] }}
+            {{ __('base.iban') }}: {{ $bank['iban'] }}<br>
+            {{ __('base.swift') }}: {{ $bank['swift'] }}<br>
+            {{ __('base.reference_id') }}: {{ $invoice['number'] }}
         </span>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-        Thank you for your business!<br>
-        Questions? Contact {{ $supplier['email'] }}
+        {{ __('pdf.invoice.thank_you') }}<br>
+        {{ __('pdf.invoice.questions_contact') }} {{ $supplier['email'] }}
     </div>
 </div>
 </body>
