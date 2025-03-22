@@ -27,6 +27,6 @@ trait HasTranslatedBreadcrumbAndNavigation
      */
     protected static function getBreadcrumbTranslation(): string
     {
-        return trans('navigation.'.str(parent::getBreadcrumb())->snake());
+        return trans('navigation.' . str(parent::getBreadcrumb())->snake());
     }
 }
