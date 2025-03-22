@@ -43,6 +43,7 @@ return [
     'description' => 'Description',
     'subtotal' => 'Subtotal',
     'registration' => 'Registration',
+    'reverse_charge' => 'Reverse-charge',
 
     'edit_invoice' => 'Edit invoice',
     'create_invoice' => 'Create invoice',

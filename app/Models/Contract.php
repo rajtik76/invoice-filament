@@ -139,6 +139,11 @@ class Contract extends Model implements KeyValueOptions
                 ->required()
                 ->options(Currency::class),
 
+            Forms\Components\Toggle::make('reverse_charge')
+                ->label(trans('base.reverse_charge'))
+                ->required()
+                ->default(false),
+
             Forms\Components\Toggle::make('active')
                 ->label(trans('base.active'))
                 ->required()
