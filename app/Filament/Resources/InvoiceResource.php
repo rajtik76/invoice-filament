@@ -6,6 +6,7 @@ use App\Enums\Currency;
 use App\Filament\Resources\InvoiceResource\Pages;
 use App\Models\Contract;
 use App\Models\Invoice;
+use App\Services\GeneratorService;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
@@ -13,6 +14,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -51,6 +54,10 @@ class InvoiceResource extends Resource
                             ->createOptionAction(fn (Action $action) => $action->slideOver())
                             ->searchable()
                             ->preload()
+                            ->live()
+                            ->afterStateUpdated(function (Set $set, Get $get, $state) {
+                                $set('number', GeneratorService::getInitials(Contract::with('customer')->find($state)->customer->name) . '-' . $get('year') . '-' . sprintf('%03d', $get('month')));
+                            })
                             ->required(),
 
                         Split::make([

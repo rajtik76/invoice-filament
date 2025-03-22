@@ -18,9 +18,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property User $user
- * @property Customer $customer
- * @property Supplier $supplier
+ * @property-read User $user
+ * @property-read Customer $customer
+ * @property-read Supplier $supplier
  */
 class Contract extends Model implements KeyValueOptions
 {

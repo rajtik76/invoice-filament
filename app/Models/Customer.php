@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property Address $address
+ * @property-read Address $address
  */
 class Customer extends Model implements KeyValueOptions
 {

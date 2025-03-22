@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property User $user
+ * @property-read User $user
  */
 class Task extends Model implements KeyValueOptions
 {

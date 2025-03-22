@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property Contract $contract
+ * @property-read Contract $contract
  */
 #[ObservedBy(InvoiceObserver::class)]
 class Invoice extends Model

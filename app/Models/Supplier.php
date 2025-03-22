@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property Address $address
- * @property BankAccount $bankAccount
+ * @property-read Address $address
+ * @property-read BankAccount $bankAccount
  */
 class Supplier extends Model
 {

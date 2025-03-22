@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property User $user
- * @property Task $task
+ * @property-read User $user
+ * @property-read Task $task
  */
 class TaskHour extends Model
 {
