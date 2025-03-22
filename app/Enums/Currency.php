@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum CurrencyEnum: string
+enum Currency: string
 {
     case EUR = 'EUR';
     case CZK = 'CZK';
@@ -17,8 +17,8 @@ enum CurrencyEnum: string
     public static function getOptions(): array
     {
         return collect(self::cases())
-            ->keyBy(fn (CurrencyEnum $currency) => $currency->value)
-            ->map(fn (CurrencyEnum $currency) => $currency->getCurrencySymbol())
+            ->keyBy(fn (Currency $currency) => $currency->value)
+            ->map(fn (Currency $currency) => $currency->getCurrencySymbol())
             ->toArray();
     }
 

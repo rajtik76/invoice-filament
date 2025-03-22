@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use App\Services\GeneratorService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Response;
 
@@ -65,7 +66,9 @@ class InvoicePdfController extends Controller
 
         $pdf = PDF::loadView('invoice-pdf', $data);
 
-        return $pdf->stream('invoice.pdf');
+        $fileName = GeneratorService::generateFileName(['invoice', $invoice->number]);
+
+        return $pdf->stream($fileName);
 
     }
 }

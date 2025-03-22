@@ -160,7 +160,13 @@
             {{ $customer['address3'] }}<br>
         </span>
         VAT #: {{ $customer['vat'] }}<br>
-        Registration #: {{ $customer['registration'] }}<br>
+        @if ($customer['registration'])
+            Registration #: {{ $customer['registration'] }}<br>
+        @else
+            &nbsp;<br>
+        @endif
+        &nbsp;<br>
+        &nbsp;
     </div>
 
     <!-- Invoice Details -->

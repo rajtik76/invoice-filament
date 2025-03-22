@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\CurrencyEnum;
+use App\Enums\Currency;
 use App\Observers\InvoiceObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,7 +25,7 @@ class Invoice extends Model
         'issue_date' => 'date',
         'due_date' => 'date',
         'content' => 'json',
-        'currency' => CurrencyEnum::class,
+        'currency' => Currency::class,
     ];
 
     public function contract(): BelongsTo

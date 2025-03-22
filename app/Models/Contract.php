@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\KeyValueOptions;
-use App\Enums\CurrencyEnum;
+use App\Enums\Currency;
 use App\Filament\Resources\CustomerResource;
 use App\Filament\Resources\SupplierResource;
 use App\Traits\HasCurrentUserScope;
@@ -29,7 +29,7 @@ class Contract extends Model implements KeyValueOptions
 
     protected $casts = [
         'signed_at' => 'date',
-        'currency' => CurrencyEnum::class,
+        'currency' => Currency::class,
     ];
 
     /**
@@ -131,7 +131,7 @@ class Contract extends Model implements KeyValueOptions
             Forms\Components\Select::make('currency')
                 ->label(trans('base.currency'))
                 ->required()
-                ->options(CurrencyEnum::class),
+                ->options(Currency::class),
 
             Forms\Components\Toggle::make('active')
                 ->label(trans('base.active'))

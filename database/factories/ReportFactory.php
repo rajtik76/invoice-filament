@@ -19,7 +19,7 @@ class ReportFactory extends Factory
         return [
             'user_id' => fn () => User::factory(),
             'contract_id' => fn () => Contract::factory(),
-            'year' => $this->faker->numberBetween(1900, now()->year),
+            'year' => $this->faker->numberBetween(2000, now()->subYear()->year),
             'month' => $this->faker->month,
             'content' => [],
             'created_at' => Carbon::now(),

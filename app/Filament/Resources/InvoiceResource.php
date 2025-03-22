@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\CurrencyEnum;
+use App\Enums\Currency;
 use App\Filament\Resources\InvoiceResource\Pages;
 use App\Models\Contract;
 use App\Models\Invoice;
@@ -48,7 +48,7 @@ class InvoiceResource extends Resource
                             ->createOptionUsing(function (array $data): void {
                                 ContractResource::createRecordForCurrentUser($data);
                             })
-                            ->createOptionAction(fn(Action $action) => $action->slideOver())
+                            ->createOptionAction(fn (Action $action) => $action->slideOver())
                             ->searchable()
                             ->preload()
                             ->required(),
@@ -56,8 +56,8 @@ class InvoiceResource extends Resource
                         Split::make([
                             TextInput::make('number')
                                 ->label(trans('base.invoice_number'))
-                                ->numeric()
-                                ->required(),
+                                ->required()
+                                ->maxLength(255),
 
                             TextInput::make('year')
                                 ->label(trans('base.year'))
@@ -120,8 +120,8 @@ class InvoiceResource extends Resource
                 Tables\Columns\TextColumn::make('total_amount')
                     ->label(trans('base.amount'))
                     ->money(
-                        currency: fn(Invoice $invoice) => $invoice->contract->currency->value,
-                        locale: fn(Invoice $invoice) => $invoice->contract->currency === CurrencyEnum::EUR ? 'de' : 'cs'
+                        currency: fn (Invoice $invoice) => $invoice->contract->currency->value,
+                        locale: fn (Invoice $invoice) => $invoice->contract->currency === Currency::EUR ? 'de' : 'cs'
                     ),
             ])
             ->filters([
@@ -134,7 +134,7 @@ class InvoiceResource extends Resource
                 Tables\Actions\Action::make('pdf')
                     ->label(trans('base.pdf'))
                     ->icon('heroicon-o-arrow-down-tray')
-                    ->url(fn(Invoice $record): string => route('invoice.pdf', ['invoice' => $record->id]))
+                    ->url(fn (Invoice $record): string => route('invoice.pdf', ['invoice' => $record->id]))
                     ->openUrlInNewTab(),
             ])
             ->bulkActions([

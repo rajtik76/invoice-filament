@@ -7,7 +7,6 @@ use App\Models\Invoice;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\Arr;
 
 class ListInvoices extends ListRecords
 {
@@ -21,7 +20,12 @@ class ListInvoices extends ListRecords
                 ->modalHeading(trans('base.create_invoice'))
                 ->slideOver()
                 ->using(function (array $data): Invoice {
-                    return Invoice::create(Arr::add($data, 'user_id', auth()->id()));
+                    $mergeData = [
+                        'user_id' => auth()->id(),
+                        'content' => [],
+                    ];
+
+                    return Invoice::create($data + $mergeData);
                 }),
         ];
     }

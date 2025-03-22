@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\KeyValueOptions;
-use App\Enums\CountryEnum;
+use App\Enums\Country;
 use App\Filament\Resources\AddressResource;
 use App\Traits\HasCurrentUserScope;
 use Filament\Forms\Components\Actions\Action;
@@ -29,7 +29,7 @@ class Address extends Model implements KeyValueOptions
     ];
 
     protected $casts = [
-        'country' => CountryEnum::class,
+        'country' => Country::class,
     ];
 
     /**
@@ -74,7 +74,7 @@ class Address extends Model implements KeyValueOptions
                     Select::make('country')
                         ->label(trans('base.country'))
                         ->required()
-                        ->options(CountryEnum::options()),
+                        ->options(Country::options()),
                 ]),
         ];
     }
