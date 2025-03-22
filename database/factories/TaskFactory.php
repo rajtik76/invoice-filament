@@ -20,7 +20,7 @@ class TaskFactory extends Factory
         return [
             'user_id' => User::factory(),
             'contract_id' => Contract::factory(),
-            'name' => fn (array $attributes) => GeneratorService::getInitials(Contract::with('customer')->find($attributes['contract_id'])->customer->name) . '-' . $this->faker->unique()->numberBetween(1, 9999) . ' ' . $this->faker->sentence(),
+            'name' => fn (array $attributes) => GeneratorService::getInitials(Contract::find($attributes['contract_id'])->name) . '-' . $this->faker->unique()->numberBetween(1, 9999) . ' ' . $this->faker->sentence(),
             'url' => $this->faker->optional()->url(),
             'note' => $this->faker->optional()->sentence(),
             'active' => $this->faker->boolean(90),

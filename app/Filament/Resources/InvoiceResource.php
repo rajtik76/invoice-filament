@@ -56,7 +56,7 @@ class InvoiceResource extends Resource
                             ->preload()
                             ->live()
                             ->afterStateUpdated(function (Set $set, Get $get, $state) {
-                                $set('number', GeneratorService::getInitials(Contract::with('customer')->find($state)->customer->name) . '-' . $get('year') . '-' . sprintf('%03d', $get('month')));
+                                $set('number', GeneratorService::getInitials(Contract::find($state)->name) . '-' . $get('year') . '-' . sprintf('%03d', $get('month')));
                             })
                             ->required(),
 
