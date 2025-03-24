@@ -23,6 +23,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rules\Unique;
 
 class InvoiceResource extends Resource
 {
@@ -68,18 +69,11 @@ class InvoiceResource extends Resource
                                 ->label(trans('base.invoice_number'))
                                 ->required()
                                 ->maxLength(255)
-                                ->rules([
-                                    fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
-                                        if (
-                                            Invoice::where('user_id', auth()->id())
-                                                ->where('contract_id', $get('contract_id'))
-                                                ->where('number', $value)
-                                                ->exists()
-                                        ) {
-                                            $fail('The invoice number has already been taken.');
-                                        }
-                                    },
-                                ]),
+                                ->unique(modifyRuleUsing: function(Unique $rule, Get $get) {
+                                    $rule->where('user_id', auth()->id())
+                                        ->where('contract_id', $get('contract_id'))
+                                        ->where('number', $get('number'));
+                                }),
 
                             TextInput::make('year')
                                 ->label(trans('base.year'))
