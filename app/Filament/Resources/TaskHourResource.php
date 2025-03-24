@@ -159,6 +159,8 @@ class TaskHourResource extends Resource
      */
     protected static function getFilteredTaskId(Pages\ListTaskHours $livewire): ?int
     {
-        return Arr::first($livewire->getTable()->getFilter('task')->getState());
+        $taskId = Arr::first($livewire->getTable()->getFilter('task')->getState());
+
+        return $taskId ? intval($taskId) : null;
     }
 }
