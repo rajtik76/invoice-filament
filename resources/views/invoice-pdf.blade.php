@@ -193,6 +193,7 @@
         </tr>
         </thead>
         <tbody>
+        @php($totalHours = 0)
         @foreach ($invoice['items'] as $item)
             <tr>
                 <td>
@@ -203,15 +204,15 @@
                     @endif
                 </td>
                 <td class="text-right">{{ number_format($item['hours'], 1) }} {{ __('base.hours') }}</td>
+                @php($totalHours += $item['hours'])
                 <td class="text-right">{{ number_format($invoice['unit_price'], 2) }} {{ $invoice['currency'] }}</td>
                 <td class="text-right">{{ number_format($item['amount'], 2) }} {{ $invoice['currency'] }}</td>
             </tr>
         @endforeach
         </tbody>
-    </table>
 
-    <!-- Invoice Summary -->
-    <table class="summary" style="margin-top: 15px;">
+        <!-- Invoice Summary -->
+        <tfoot>
         @if (isset($invoice['tax']))
             <tr>
                 <td class="text-right">
@@ -226,10 +227,12 @@
             </tr>
         @endif
         <tr class="total-row">
-            <th class="text-right">
-                <strong>{{ __('base.total') }}
-                    : {{ number_format($invoice['totalAmount'], 2) }} {{ $invoice['currency'] }}</strong></th>
+            <th><strong>{{ __('base.total') }}:</strong></th>
+            <th class="text-right">{{ number_format($totalHours, 1) }} {{ __('base.hours') }}</th>
+            <th></th>
+            <th class="text-right">{{ number_format($invoice['totalAmount'], 2) }} {{ $invoice['currency'] }}</th>
         </tr>
+        </tfoot>
     </table>
 
     <!-- Reverse Charge Notice -->
