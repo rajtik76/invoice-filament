@@ -9,6 +9,7 @@ use App\Filament\Resources\InvoiceResource\Pages;
 use App\Models\Contract;
 use App\Models\Invoice;
 use App\Services\GeneratorService;
+use Closure;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
@@ -66,7 +67,19 @@ class InvoiceResource extends Resource
                             TextInput::make('number')
                                 ->label(trans('base.invoice_number'))
                                 ->required()
-                                ->maxLength(255),
+                                ->maxLength(255)
+                                ->rules([
+                                    fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                                        if (
+                                            Invoice::where('user_id', auth()->id())
+                                                ->where('contract_id', $get('contract_id'))
+                                                ->where('number', $value)
+                                                ->exists()
+                                        ) {
+                                            $fail('The invoice number has already been taken.');
+                                        }
+                                    },
+                                ]),
 
                             TextInput::make('year')
                                 ->label(trans('base.year'))
