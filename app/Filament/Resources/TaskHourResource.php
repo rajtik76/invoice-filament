@@ -155,7 +155,7 @@ class TaskHourResource extends Resource
     }
 
     /**
-     * Get list table filtered task id
+     * Retrieves the filtered task ID from the given Livewire component's table filters.
      */
     protected static function getFilteredTaskId(Pages\ListTaskHours $livewire): ?int
     {
