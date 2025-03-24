@@ -20,6 +20,6 @@ it('can download report PDF', function () {
     $this->assertNotEmpty($response->getContent());
     $this->assertEquals('application/pdf', $response->headers->get('Content-Type'));
 
-    $fileName = GeneratorService::generateFileName(['report', $report->contract->customer->name, sprintf('%04d', $report->year), sprintf('%02d', $report->month)]);
+    $fileName = GeneratorService::generateFileName(['report', $report->contract->name, sprintf('%04d', $report->year), sprintf('%02d', $report->month)]);
     $this->assertEquals('inline; filename=' . $fileName, $response->headers->get('Content-Disposition'));
 });

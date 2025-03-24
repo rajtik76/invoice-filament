@@ -77,7 +77,8 @@
 <body>
 <div class="header">
     {{ __('pdf.report.title') }} {{ $year }}/{{ $month }}<br>
-    <span style="font-size: 10px;">{{ data_get($contract, 'customer.name') }}</span>
+    <span style="font-size: 10px;">{{ data_get($contract, 'customer.name') }}</span><br>
+    <strong>{{ __('base.total') }}: {{ collect($content)->sum(fn(array $items) => collect($items)->sum('hours')) }} {{ __('base.hours') }}</strong>
 </div>
 
 @foreach ($content as $date => $tasks)

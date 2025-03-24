@@ -18,7 +18,7 @@ class ReportPdfController extends Controller
 
         $pdf = PDF::loadView('report-pdf', $report->load(['contract.customer'])->toArray());
 
-        $filename = GeneratorService::generateFileName(['report', $report->contract->customer->name, sprintf('%04d', $report->year), sprintf('%02d', $report->month)]);
+        $filename = GeneratorService::generateFileName(['report', $report->contract->name, sprintf('%04d', $report->year), sprintf('%02d', $report->month)]);
 
         return $pdf->stream($filename);
     }
