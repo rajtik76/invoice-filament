@@ -8,10 +8,12 @@ use App\Traits\HasCurrentUserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 /**
  * @property-read User $user
  * @property-read Task $task
+ * @property-read Invoice|null $invoice
  */
 class TaskHour extends Model
 {
@@ -31,5 +33,10 @@ class TaskHour extends Model
     public function task(): BelongsTo
     {
         return $this->belongsTo(Task::class);
+    }
+
+    public function invoice(): HasOneThrough
+    {
+        return $this->hasOneThrough(related: Invoice::class, through: InvoiceHour::class, firstKey: 'task_hour_id', secondKey: 'id', localKey: 'id', secondLocalKey: 'invoice_id');
     }
 }

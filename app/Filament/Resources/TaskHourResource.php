@@ -35,7 +35,7 @@ class TaskHourResource extends Resource
                     ->columns(1)
                     ->schema([
                         Forms\Components\Select::make('task_id')
-                            ->label(trans('base.task'))
+                            ->label(__('base.task'))
                             ->disabled(function (Pages\ListTaskHours $livewire, ?TaskHour $record): bool {
                                 if (static::getFilteredTaskId($livewire) && ! $record) {
                                     return true;
@@ -56,7 +56,7 @@ class TaskHourResource extends Resource
 
                                 return null;
                             })
-                            ->createOptionModalHeading(trans('base.create_task'))
+                            ->createOptionModalHeading(__('base.create_task'))
                             ->createOptionForm(Task::getForm())
                             ->createOptionUsing(function (array $data): void {
                                 TaskResource::createRecordForCurrentUser($data);
@@ -68,13 +68,13 @@ class TaskHourResource extends Resource
 
                         Forms\Components\Split::make([
                             Forms\Components\DatePicker::make('date')
-                                ->label(trans('base.date'))
+                                ->label(__('base.date'))
                                 ->format('d.m.Y')
                                 ->default(now())
                                 ->required(),
 
                             Forms\Components\TextInput::make('hours')
-                                ->label(trans('base.hours'))
+                                ->label(__('base.hours'))
                                 ->required()
                                 ->numeric()
                                 ->minValue(0.5)
@@ -82,7 +82,7 @@ class TaskHourResource extends Resource
                         ]),
 
                         Forms\Components\Textarea::make('comment')
-                            ->label(trans('base.comment'))
+                            ->label(__('base.comment'))
                             ->columnSpanFull(),
                     ]),
             ]);
@@ -91,33 +91,43 @@ class TaskHourResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(function (Builder $query) {
-                $query->when(request()->get('task'), function (Builder $q, ?string $task) {
-                    $q->where('task_id', $task);
-                });
+            ->modifyQueryUsing(function (/** @var Builder<TaskHour> $query */ Builder $query) {
+                $query
+                    ->with(['invoice'])
+                    ->when(request()->get('task'), function (Builder $builder, ?string $task) {
+                        $builder->where('task_id', $task);
+                    });
             })
             ->defaultSort('date', 'desc')
+
             ->columns([
+                Tables\Columns\TextColumn::make('invoice')
+                    ->label(__('base.invoice'))
+                    ->formatStateUsing(fn (TaskHour $record): string => $record->invoice?->number)
+                    ->badge()
+                    ->color('success'),
+
                 Tables\Columns\TextColumn::make('task.name')
-                    ->label(trans('base.task'))
+                    ->label(__('base.task'))
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('date')
-                    ->label(trans('base.date'))
+                    ->label(__('base.date'))
                     ->date('d.m.Y')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('hours')
-                    ->label(trans('base.hours'))
+                    ->label(__('base.hours'))
                     ->numeric()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('comment')
-                    ->label(trans('base.comment'))
+                    ->label(__('base.comment'))
                     ->size('xs')
                     ->extraAttributes(['class' => 'italic']),
             ])
+
             ->filters([
                 Tables\Filters\SelectFilter::make('task')
                     ->relationship(
@@ -127,24 +137,30 @@ class TaskHourResource extends Resource
                             $query->where('user_id', auth()->id())->orderBy('name');
                         })
                     ->attribute('task_id'),
+
+                Tables\Filters\TernaryFilter::make('invoice')
+                    ->label(__('base.invoice'))
+                    ->trueLabel(__('base.filters.task_hours.invoice.true'))
+                    ->falseLabel(__('base.filters.task_hours.invoice.false'))
+                    ->placeholder(__('base.filters.task_hours.invoice.null'))
+                    ->queries(
+                        true: fn (/** @var Builder<TaskHour> $query */ Builder $query): Builder => $query->has('invoice'),
+                        false: fn (/** @var Builder<TaskHour> $query */ Builder $query): Builder => $query->doesntHave('invoice'),
+                        blank: fn (Builder $query): Builder => $query,
+                    ),
             ])
+
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->slideOver()
-                    ->modalHeading(trans('base.edit_task_hour')),
+                    ->modalHeading(__('base.edit_task_hour')),
             ])
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array

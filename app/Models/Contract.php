@@ -11,6 +11,7 @@ use App\Filament\Resources\SupplierResource;
 use App\Traits\HasCurrentUserScope;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -69,6 +70,12 @@ class Contract extends Model implements KeyValueOptions
     public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class);
+    }
+
+    #[Scope]
+    protected function active(Builder $query): void
+    {
+        $query->where('active', true);
     }
 
     /**

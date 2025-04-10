@@ -91,4 +91,19 @@ return [
         'contract_supplier_customer_unique' => 'Contract with this customer and supplier already exists.',
         'report_unique' => 'Report for this contract in selected year and month already exists.',
     ],
+
+    'filters' => [
+        'task_hours' => [
+            'invoice' => [
+                'true' => 'Was used',
+                'false' => 'Was not used',
+                'null' => 'All',
+            ],
+        ],
+    ],
+
+    'actions' => [
+        'assign_to_invoice' => 'Assign to invoice',
+        'remove_from_invoice' => 'Remove from invoice',
+    ],
 ];

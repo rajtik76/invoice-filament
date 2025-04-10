@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\Currency;
 use App\Observers\InvoiceObserver;
+use App\Traits\HasLoggedUserScopeTrait;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Invoice extends Model
 {
     use HasFactory;
+    use HasLoggedUserScopeTrait;
 
     protected $guarded = [];
 
