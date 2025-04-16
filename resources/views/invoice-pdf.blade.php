@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('base.invoice') }}</title>
+    <title>{{ trans('base.invoice') }}</title>
 
     <style>
         body {
@@ -133,35 +133,35 @@
 </head>
 <body>
 <div class="invoice-box">
-    <h1>{{ __('base.invoice') }}</h1>
+    <h1>{{ trans('base.invoice') }}</h1>
 
     <!-- Supplier -->
     <div class="frame" style="margin-right: 1%;">
-        <span class="icon-title">{{ __('base.supplier') }}</span>
+        <span class="icon-title">{{ trans('base.supplier') }}</span>
         <strong>{{ $supplier['name'] }}</strong><br>
         <span class="address">
             {{ $supplier['address1'] }}<br>
             {{ $supplier['address2'] }}<br>
             {{ $supplier['address3'] }}<br>
         </span>
-        {{ __('base.vat') }}: {{ $supplier['vat'] }}<br>
-        {{ __('base.registration') }}: {{ $supplier['registration'] }}<br>
-        {{ __('base.email') }}: {{ $supplier['email'] }}<br>
-        {{ __('base.phone') }}: {{ $supplier['phone'] }}
+        {{ trans('base.vat') }}: {{ $supplier['vat'] }}<br>
+        {{ trans('base.registration') }}: {{ $supplier['registration'] }}<br>
+        {{ trans('base.email') }}: {{ $supplier['email'] }}<br>
+        {{ trans('base.phone') }}: {{ $supplier['phone'] }}
     </div>
 
     <!-- Customer -->
     <div class="frame">
-        <span class="icon-title">{{ __('base.customer') }}</span>
+        <span class="icon-title">{{ trans('base.customer') }}</span>
         <strong>{{ $customer['name'] }}</strong><br>
         <span class="address">
             {{ $customer['address1'] }}<br>
             {{ $customer['address2'] }}<br>
             {{ $customer['address3'] }}<br>
         </span>
-        {{ __('base.vat') }}: {{ $customer['vat'] }}<br>
+        {{ trans('base.vat') }}: {{ $customer['vat'] }}<br>
         @if ($customer['registration'])
-            {{ __('base.registration') }}: {{ $customer['registration'] }}<br>
+            {{ trans('base.registration') }}: {{ $customer['registration'] }}<br>
         @else
             &nbsp;<br>
         @endif
@@ -173,11 +173,11 @@
     <table>
         <tr>
             <td>
-                <strong>{{ __('base.invoice') }} #:</strong> {{ $invoice['number'] }}<br>
-                <strong>{{ __('base.issue_date') }}:</strong> {{ $invoice['date'] }}
+                <strong>{{ trans('base.invoice') }} #:</strong> {{ $invoice['number'] }}<br>
+                <strong>{{ trans('base.issue_date') }}:</strong> {{ $invoice['date'] }}
             </td>
             <td class="text-right">
-                <strong>{{ __('base.due_date') }}:</strong> <span class="highlight">{{ $invoice['dueDate'] }}</span>
+                <strong>{{ trans('base.due_date') }}:</strong> <span class="highlight">{{ $invoice['dueDate'] }}</span>
             </td>
         </tr>
     </table>
@@ -186,10 +186,10 @@
     <table>
         <thead>
         <tr>
-            <th>{{ __('base.description') }}</th>
-            <th class="text-right">{{ __('base.quantity') }}</th>
-            <th class="text-right">{{ __('base.unit_price') }}</th>
-            <th class="text-right">{{ __('base.amount') }}</th>
+            <th>{{ trans('base.description') }}</th>
+            <th class="text-right">{{ trans('base.quantity') }}</th>
+            <th class="text-right">{{ trans('base.unit_price') }}</th>
+            <th class="text-right">{{ trans('base.amount') }}</th>
         </tr>
         </thead>
         <tbody>
@@ -203,7 +203,7 @@
                         {{ $item['name'] }}
                     @endif
                 </td>
-                <td class="text-right">{{ number_format($item['hours'], 1) }} {{ __('base.hours') }}</td>
+                <td class="text-right">{{ number_format($item['hours'], 1) }} {{ trans('base.hours') }}</td>
                 @php($totalHours += $item['hours'])
                 <td class="text-right">{{ number_format($invoice['unit_price'], 2) }} {{ $invoice['currency'] }}</td>
                 <td class="text-right">{{ number_format($item['amount'], 2) }} {{ $invoice['currency'] }}</td>
@@ -216,19 +216,19 @@
         @if (isset($invoice['tax']))
             <tr>
                 <td class="text-right">
-                    <strong>{{ __('base.subtotal') }}
+                    <strong>{{ trans('base.subtotal') }}
                         : {{ number_format($invoice['subtotal'], 2) }} {{ $invoice['currency'] }}</strong>
                 </td>
             </tr>
             <tr>
                 <td class="text-right">
-                    <strong>{{ __('pdf.invoice.tax') }}
+                    <strong>{{ trans('pdf.invoice.tax') }}
                         : {{ number_format($invoice['tax'], 2) }} {{ $invoice['currency'] }}</strong></td>
             </tr>
         @endif
         <tr class="total-row">
-            <th><strong>{{ __('base.total') }}:</strong></th>
-            <th class="text-right">{{ number_format($totalHours, 1) }} {{ __('base.hours') }}</th>
+            <th><strong>{{ trans('base.total') }}:</strong></th>
+            <th class="text-right">{{ number_format($totalHours, 1) }} {{ trans('base.hours') }}</th>
             <th></th>
             <th class="text-right">{{ number_format($invoice['totalAmount'], 2) }} {{ $invoice['currency'] }}</th>
         </tr>
@@ -238,26 +238,26 @@
     <!-- Reverse Charge Notice -->
     @if ($invoice['isReverseCharge'])
         <div class="reverse-charge">
-            {{ __('pdf.invoice.reverse_charge') }}
+            {{ trans('pdf.invoice.reverse_charge') }}
         </div>
     @endif
 
     <!-- Payment Information -->
     <div class="payment-info">
         <h3 style="font-size: 14px; margin: 0 0 8px; color: #2A3F54;">Payment Details</h3>
-        {{ __('base.bank_name') }}: {{ $bank['name'] }}<br>
-        {{ __('base.bank_account') }}: {{ $bank['account'] }}/{{ $bank['code'] }}<br>
+        {{ trans('base.bank_name') }}: {{ $bank['name'] }}<br>
+        {{ trans('base.bank_account') }}: {{ $bank['account'] }}/{{ $bank['code'] }}<br>
         <span class="payment-highlight">
-            {{ __('base.iban') }}: {{ $bank['iban'] }}<br>
-            {{ __('base.swift') }}: {{ $bank['swift'] }}<br>
-            {{ __('base.reference_id') }}: {{ $invoice['number'] }}
+            {{ trans('base.iban') }}: {{ $bank['iban'] }}<br>
+            {{ trans('base.swift') }}: {{ $bank['swift'] }}<br>
+            {{ trans('base.reference_id') }}: {{ $invoice['number'] }}
         </span>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-        {{ __('pdf.invoice.thank_you') }}<br>
-        {{ __('pdf.invoice.questions_contact') }} {{ $supplier['email'] }}
+        {{ trans('pdf.invoice.thank_you') }}<br>
+        {{ trans('pdf.invoice.questions_contact') }} {{ $supplier['email'] }}
     </div>
 </div>
 </body>

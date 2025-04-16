@@ -35,7 +35,7 @@ class TaskHourResource extends Resource
                     ->columns(1)
                     ->schema([
                         Forms\Components\Select::make('task_id')
-                            ->label(__('base.task'))
+                            ->label(trans('base.task'))
                             ->disabled(function (Pages\ListTaskHours $livewire, ?TaskHour $record): bool {
                                 if (static::getFilteredTaskId($livewire) && ! $record) {
                                     return true;
@@ -56,7 +56,7 @@ class TaskHourResource extends Resource
 
                                 return null;
                             })
-                            ->createOptionModalHeading(__('base.create_task'))
+                            ->createOptionModalHeading(trans('base.create_task'))
                             ->createOptionForm(Task::getForm())
                             ->createOptionUsing(function (array $data): void {
                                 TaskResource::createRecordForCurrentUser($data);
@@ -68,13 +68,13 @@ class TaskHourResource extends Resource
 
                         Forms\Components\Split::make([
                             Forms\Components\DatePicker::make('date')
-                                ->label(__('base.date'))
+                                ->label(trans('base.date'))
                                 ->format('d.m.Y')
                                 ->default(now())
                                 ->required(),
 
                             Forms\Components\TextInput::make('hours')
-                                ->label(__('base.hours'))
+                                ->label(trans('base.hours'))
                                 ->required()
                                 ->numeric()
                                 ->minValue(0.5)
@@ -82,7 +82,7 @@ class TaskHourResource extends Resource
                         ]),
 
                         Forms\Components\Textarea::make('comment')
-                            ->label(__('base.comment'))
+                            ->label(trans('base.comment'))
                             ->columnSpanFull(),
                     ]),
             ]);
@@ -102,28 +102,28 @@ class TaskHourResource extends Resource
 
             ->columns([
                 Tables\Columns\TextColumn::make('invoice')
-                    ->label(__('base.invoice'))
+                    ->label(trans('base.invoice'))
                     ->formatStateUsing(fn (TaskHour $record): string => $record->invoice?->number)
                     ->badge()
                     ->color('success'),
 
                 Tables\Columns\TextColumn::make('task.name')
-                    ->label(__('base.task'))
+                    ->label(trans('base.task'))
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('date')
-                    ->label(__('base.date'))
+                    ->label(trans('base.date'))
                     ->date('d.m.Y')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('hours')
-                    ->label(__('base.hours'))
+                    ->label(trans('base.hours'))
                     ->numeric()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('comment')
-                    ->label(__('base.comment'))
+                    ->label(trans('base.comment'))
                     ->size('xs')
                     ->extraAttributes(['class' => 'italic']),
             ])
@@ -139,10 +139,10 @@ class TaskHourResource extends Resource
                     ->attribute('task_id'),
 
                 Tables\Filters\TernaryFilter::make('invoice')
-                    ->label(__('base.invoice'))
-                    ->trueLabel(__('base.filters.task_hours.invoice.true'))
-                    ->falseLabel(__('base.filters.task_hours.invoice.false'))
-                    ->placeholder(__('base.filters.task_hours.invoice.null'))
+                    ->label(trans('base.invoice'))
+                    ->trueLabel(trans('base.filters.task_hours.invoice.true'))
+                    ->falseLabel(trans('base.filters.task_hours.invoice.false'))
+                    ->placeholder(trans('base.filters.task_hours.invoice.null'))
                     ->queries(
                         true: fn (/** @var Builder<TaskHour> $query */ Builder $query): Builder => $query->has('invoice'),
                         false: fn (/** @var Builder<TaskHour> $query */ Builder $query): Builder => $query->doesntHave('invoice'),
@@ -153,7 +153,7 @@ class TaskHourResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->slideOver()
-                    ->modalHeading(__('base.edit_task_hour')),
+                    ->modalHeading(trans('base.edit_task_hour')),
             ])
 
             ->bulkActions([

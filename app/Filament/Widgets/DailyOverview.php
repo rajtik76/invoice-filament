@@ -36,9 +36,9 @@ class DailyOverview extends BaseWidget
             ->defaultPaginationPageOption(5)
             ->columns([
                 TextColumn::make('day')
-                    ->label(__('base.date')),
+                    ->label(trans('base.date')),
                 TextColumn::make('sum_hours')
-                    ->label(__('base.hours'))
+                    ->label(trans('base.hours'))
                     ->numeric(1),
                 TextColumn::make('overviews')
                     ->label('Spent hours')

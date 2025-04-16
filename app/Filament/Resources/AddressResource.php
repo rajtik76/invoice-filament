@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Enums\Country;
+use App\Enums\CountryEnum;
 use App\Filament\Resources\AddressResource\Pages;
 use App\Models\Address;
 use Filament\Forms\Form;
@@ -50,7 +50,7 @@ class AddressResource extends Resource
                     ->label(trans('base.country'))
                     ->sortable()
                     ->searchable()
-                    ->formatStateUsing(fn (Country $state): string => $state->countryName()),
+                    ->formatStateUsing(fn (CountryEnum $state): string => $state->countryName()),
             ])
             ->filters([
                 //
