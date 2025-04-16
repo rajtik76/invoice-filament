@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Traits\HasCurrentUserScope;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,5 +40,11 @@ class TaskHour extends Model
     public function invoice(): HasOneThrough
     {
         return $this->hasOneThrough(related: Invoice::class, through: InvoiceHour::class, firstKey: 'task_hour_id', secondKey: 'id', localKey: 'id', secondLocalKey: 'invoice_id');
+    }
+
+    #[Scope]
+    protected function contract(Builder $query, int $contract_id): void
+    {
+        $query->whereHas('task', fn (Builder $query) => $query->where('contract_id', $contract_id));
     }
 }

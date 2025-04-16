@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum Country: string
+enum CountryEnum: string
 {
     case Germany = 'DE';
     case Czech = 'CZ';

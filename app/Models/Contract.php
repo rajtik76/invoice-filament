@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\KeyValueOptions;
-use App\Enums\Currency;
+use App\Enums\CurrencyEnum;
 use App\Filament\Resources\CustomerResource;
 use App\Filament\Resources\SupplierResource;
 use App\Traits\HasCurrentUserScope;
@@ -31,7 +31,7 @@ class Contract extends Model implements KeyValueOptions
 
     protected $casts = [
         'signed_at' => 'date',
-        'currency' => Currency::class,
+        'currency' => CurrencyEnum::class,
     ];
 
     /**
@@ -144,7 +144,7 @@ class Contract extends Model implements KeyValueOptions
             Forms\Components\Select::make('currency')
                 ->label(trans('base.currency'))
                 ->required()
-                ->options(Currency::class),
+                ->options(CurrencyEnum::class),
 
             Forms\Components\Toggle::make('reverse_charge')
                 ->label(trans('base.reverse_charge'))
