@@ -44,7 +44,8 @@ class Task extends Model implements KeyValueOptionsContract
     /** @return array<int, string> */
     public static function getOptions(): array
     {
-        return self::currentUser()
+        return TaskHour::query()
+            ->currentUser()
             ->orderBy('name')
             ->pluck('name', 'id')
             ->toArray();

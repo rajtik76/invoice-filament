@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 /**
  * Casts
  * =====
+ *
  * @property-read CarbonImmutable $issue_date
  * @property-read CarbonImmutable $due_date
  * @property-read CurrencyEnum $currency
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * Relations
  * =========
  * @property-read Contract $contract
+ * @property-read float|null $task_hours_sum_hours
  */
 class Invoice extends Model
 {

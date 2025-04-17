@@ -25,7 +25,8 @@ class BankAccount extends Model implements KeyValueOptionsContract
      */
     public static function getOptions(): array
     {
-        return self::currentUser()
+        return BankAccount::query()
+            ->currentUser()
             ->orderBy('bank_name')
             ->orderBy('account_number')
             ->get()

@@ -32,7 +32,8 @@ class Customer extends Model implements KeyValueOptionsContract
      */
     public static function getOptions(): array
     {
-        return self::currentUser()
+        return Customer::query()
+            ->currentUser()
             ->orderBy('name')
             ->get()
             ->keyBy('id')

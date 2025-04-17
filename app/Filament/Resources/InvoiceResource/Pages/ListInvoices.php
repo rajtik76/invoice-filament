@@ -12,6 +12,7 @@ use App\Models\TaskHour;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Exceptions\Halt;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\DB;
 use Throwable;
@@ -35,18 +36,18 @@ class ListInvoices extends ListRecords
                             'user_id' => auth()->id(),
                             'contract_id' => $data['contract_id'],
                             'number' => $data['number'],
-                            'status' => InvoiceStatusEnum::Draft
+                            'status' => InvoiceStatusEnum::Draft,
                         ]);
 
                         // Assign all unassigned hours from current month and same customer to invoice
                         if (data_get($data, 'prepare_hours')) {
-                            $taskHourIds = TaskHour::currentUser()
+                            $taskHourIds = TaskHour::query()->currentUser()
                                 ->doesntHave('invoice')
-                                ->whereHas('task', fn($query) => $query->where('contract_id', $data['contract_id']))
+                                ->whereHas('task', fn ($query) => $query->where('contract_id', $data['contract_id']))
                                 ->whereYear('date', now()->year)
                                 ->whereMonth('date', now()->month)
                                 ->get()
-                                ->map(fn(TaskHour $taskHour) => ['invoice_id' => $invoice->id, 'task_hour_id' => $taskHour->id])
+                                ->map(fn (TaskHour $taskHour) => ['invoice_id' => $invoice->id, 'task_hour_id' => $taskHour->id])
                                 ->all();
 
                             if ($taskHourIds) {
@@ -65,13 +66,14 @@ class ListInvoices extends ListRecords
                             ->body($t->getMessage())
                             ->danger()
                             ->send();
-                        $this->halt();
+
+                        throw new Halt;
                     }
                 }),
         ];
     }
 
-    public function getTitle(): string | Htmlable
+    public function getTitle(): string|Htmlable
     {
         return trans('navigation.invoices');
     }

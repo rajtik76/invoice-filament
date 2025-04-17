@@ -39,7 +39,8 @@ class Contract extends Model implements KeyValueOptionsContract
      */
     public static function getOptions(): array
     {
-        return self::currentUser()
+        return Contract::query()
+            ->currentUser()
             ->orderBy('name')
             ->get()
             ->keyBy('id')

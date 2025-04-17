@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Builder;
 trait HasCurrentUserScopeTrait
 {
     #[Scope]
-    protected function currentUser(Builder $builder): void
+    protected function currentUser(?Builder $builder = null): Builder
     {
-        $builder->where('user_id', auth()->id());
+        return $builder->where('user_id', auth()->id());
     }
 }

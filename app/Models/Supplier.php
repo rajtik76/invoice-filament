@@ -39,7 +39,8 @@ class Supplier extends Model
      */
     public static function getOptions(): array
     {
-        return self::currentUser()
+        return Supplier::query()
+            ->currentUser()
             ->orderBy('name')
             ->get()
             ->keyBy('id')

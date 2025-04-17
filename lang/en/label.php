@@ -56,6 +56,9 @@ return [
     'view' => 'View',
     'create_task_hour' => 'Create task hour',
     'add_to_invoice' => 'Add to invoice',
+    'quantity' => 'Quantity',
+    'unit_price' => 'Unit price',
+    'total' => 'Total',
 
     'filters' => [
         'task_hours' => [
@@ -63,7 +66,7 @@ return [
                 'true' => 'Assigned',
                 'false' => 'Not assigned',
                 'null' => 'All',
-            ]
+            ],
         ],
     ],
 ];

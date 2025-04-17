@@ -39,7 +39,8 @@ class Address extends Model implements KeyValueOptionsContract
      */
     public static function getOptions(): array
     {
-        return self::currentUser()
+        return Address::query()
+            ->currentUser()
             ->orderBy('country')
             ->orderBy('city')
             ->orderBy('street')

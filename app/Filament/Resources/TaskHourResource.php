@@ -45,7 +45,7 @@ class TaskHourResource extends Resource
                         Forms\Components\Select::make('task_id')
                             ->label(trans('label.task'))
                             ->disabled(function (Pages\ListTaskHours $livewire, ?TaskHour $record): bool {
-                                if (static::getFilteredTaskId($livewire) && !$record) {
+                                if (static::getFilteredTaskId($livewire) && ! $record) {
                                     return true;
                                 }
 
@@ -58,7 +58,7 @@ class TaskHourResource extends Resource
                                     $query->where('user_id', auth()->id())->orderBy('name');
                                 })
                             ->default(function (Pages\ListTaskHours $livewire, ?TaskHour $record): ?int {
-                                if (!$record) {
+                                if (! $record) {
                                     return static::getFilteredTaskId($livewire);
                                 }
 
@@ -69,7 +69,7 @@ class TaskHourResource extends Resource
                             ->createOptionUsing(function (array $data): void {
                                 TaskResource::createRecordForCurrentUser($data);
                             })
-                            ->createOptionAction(fn(Action $action) => $action->slideOver())
+                            ->createOptionAction(fn (Action $action) => $action->slideOver())
                             ->searchable()
                             ->preload()
                             ->required(),
@@ -110,9 +110,9 @@ class TaskHourResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('invoice')
                     ->label(trans('label.invoice'))
-                    ->formatStateUsing(fn(TaskHour $record): string => $record->invoice?->number)
+                    ->formatStateUsing(fn (TaskHour $record): string => $record->invoice?->number)
                     ->badge()
-                    ->color(fn(TaskHour $record): array => match ($record->invoice?->status) {
+                    ->color(fn (TaskHour $record): array => match ($record->invoice?->status) {
                         InvoiceStatusEnum::Draft => Color::Blue,
                         default => Color::Green,
                     }),
@@ -153,9 +153,9 @@ class TaskHourResource extends Resource
                     ->falseLabel(trans('label.filters.task_hours.invoice.false'))
                     ->placeholder(trans('label.filters.task_hours.invoice.null'))
                     ->queries(
-                        true: fn(/** @var Builder<TaskHour> $query */ Builder $query): Builder => $query->has('invoice'),
-                        false: fn(/** @var Builder<TaskHour> $query */ Builder $query): Builder => $query->doesntHave('invoice'),
-                        blank: fn(Builder $query): Builder => $query,
+                        true: fn (/** @var Builder<TaskHour> $query */ Builder $query): Builder => $query->has('invoice'),
+                        false: fn (/** @var Builder<TaskHour> $query */ Builder $query): Builder => $query->doesntHave('invoice'),
+                        blank: fn (Builder $query): Builder => $query,
                     ),
             ])
             ->actions([
@@ -172,8 +172,8 @@ class TaskHourResource extends Resource
                         ->form([
                             Forms\Components\Select::make('invoice_id')
                                 ->label(trans('label.invoice'))
-                                ->options(Invoice::loggedUser()->where('status', InvoiceStatusEnum::Draft)->get()->pluck('number', 'id'))
-                                ->required()
+                                ->options(Invoice::query()->loggedUser()->where('status', InvoiceStatusEnum::Draft)->pluck('number', 'id'))
+                                ->required(),
                         ])
                         ->action(function (array $data, Collection $records): void {
                             // Get invoice id
@@ -183,9 +183,10 @@ class TaskHourResource extends Resource
                             $invoiceContractId = Invoice::find($invoiceId)->contract_id;
 
                             // Check if all records have same contract as invoice
-                            $recordsHaveSameContract = $records->every(fn(TaskHour $record): bool => $record->task->contract_id === $invoiceContractId);
+                            /** @var Collection<int, TaskHour> $records */
+                            $recordsHaveSameContract = $records->every(fn (TaskHour $record): bool => $record->task->contract_id === $invoiceContractId);
 
-                            if (!$recordsHaveSameContract) {
+                            if (! $recordsHaveSameContract) {
                                 Notification::make()
                                     ->title(trans('notification.task_hour_contract_not_match_invoice_contract'))
                                     ->warning()
@@ -194,13 +195,13 @@ class TaskHourResource extends Resource
                                 return;
                             }
 
-                            // Assign task hours to invoice
-                            InvoiceHour::upsert($records->map(fn(TaskHour $taskHour): array => ['invoice_id' => $invoiceId, 'task_hour_id' => $taskHour->id])->all(), ['task_hour_id']);
+                            // Assign task hours to an invoice
+                            InvoiceHour::upsert($records->map(fn (TaskHour $taskHour): array => ['invoice_id' => $invoiceId, 'task_hour_id' => $taskHour->id])->all(), ['task_hour_id']);
                         })
                         ->deselectRecordsAfterCompletion(),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])->checkIfRecordIsSelectableUsing(fn(TaskHour $record): bool => !$record->invoice || $record->invoice->status === InvoiceStatusEnum::Draft);
+            ])->checkIfRecordIsSelectableUsing(fn (TaskHour $record): bool => ! $record->invoice || $record->invoice->status === InvoiceStatusEnum::Draft);
     }
 
     public static function getPages(): array
