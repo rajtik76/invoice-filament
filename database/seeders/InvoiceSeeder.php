@@ -14,9 +14,9 @@ class InvoiceSeeder extends Seeder
     public function run(): void
     {
         foreach (User::all() as $user) {
-            // Get random contract
-            $contractClosure = fn(): Contract => Contract::where('user_id', $user->id)->inRandomOrder()->first();
-            $contract = $contractClosure();
+            // Get a random contract
+            $userContractsInRandomOrder = Contract::where('user_id', $user->id)->inRandomOrder()->get();
+            $contract = $userContractsInRandomOrder->first();
 
             // Create 6 tasks per contract
             $contractTasks = Task::factory()
@@ -32,17 +32,17 @@ class InvoiceSeeder extends Seeder
                     ->create();
             }
 
-            // Create two invoice with draft status per user with random contract
+            // Create two invoices with draft status per user with a random contract
             Invoice::factory()
                 ->count(2)
                 ->recycle([$user, $contract])
                 ->draft()
                 ->create();
 
-            // Create two invoices with issued status per user with random contract
+            // Create two invoices with an issued status per user with a random contract
             $issuedInvoices = Invoice::factory()
                 ->count(2)
-                ->recycle([$user, $contractClosure()])
+                ->recycle([$user, $userContractsInRandomOrder->last()])
                 ->issued()
                 ->create();
 
