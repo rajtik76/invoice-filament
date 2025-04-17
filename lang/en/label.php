@@ -54,4 +54,16 @@ return [
     'invoice_details' => 'Invoice details',
     'dates' => 'Dates',
     'view' => 'View',
+    'create_task_hour' => 'Create task hour',
+    'add_to_invoice' => 'Add to invoice',
+
+    'filters' => [
+        'task_hours' => [
+            'invoice' => [
+                'true' => 'Assigned',
+                'false' => 'Not assigned',
+                'null' => 'All',
+            ]
+        ],
+    ],
 ];

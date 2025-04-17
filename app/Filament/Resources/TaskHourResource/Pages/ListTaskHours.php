@@ -21,8 +21,8 @@ class ListTaskHours extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->label(trans('base.create_task_hour'))
-                ->modalHeading(trans('base.create_task_hour'))
+                ->label(trans('label.create_task_hour'))
+                ->modalHeading(trans('label.create_task_hour'))
                 ->slideOver()
                 ->using(function (array $data): void {
                     TaskHour::create(Arr::add($data, 'user_id', auth()->id()));

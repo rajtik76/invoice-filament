@@ -10,6 +10,7 @@ use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Support\Colors\Color;
 
 class ViewInvoice extends ViewRecord
 {
@@ -38,7 +39,8 @@ class ViewInvoice extends ViewRecord
                 Section::make([
                     TextEntry::make('amount')
                         ->label(trans('label.amount'))
-                        ->getStateUsing(fn(Invoice $record): string => number_format((float)$record->taskHours()->sum('hours') * $record->contract->price_per_hour, 2) . ' ' . $record->contract->currency->getCurrencySymbol()),
+                        ->getStateUsing(fn(Invoice $record): string => number_format((float)$record->taskHours()->sum('hours') * $record->contract->price_per_hour, 2) . ' ' . $record->contract->currency->getCurrencySymbol())
+                    ->color(Color::Green),
                 ]),
             ]);
     }
