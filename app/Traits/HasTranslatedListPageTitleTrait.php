@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Resources;
+namespace App\Traits;
 
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Contracts\Support\Htmlable;
@@ -10,7 +10,7 @@ use Illuminate\Contracts\Support\Htmlable;
 /**
  * @mixin ListRecords
  */
-trait HasTranslatedListPageTitle
+trait HasTranslatedListPageTitleTrait
 {
     public function getTitle(): string|Htmlable
     {

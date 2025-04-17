@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\KeyValueOptions;
+use App\Contracts\KeyValueOptionsContract;
 use App\Enums\CountryEnum;
 use App\Filament\Resources\AddressResource;
-use App\Traits\HasCurrentUserScope;
+use App\Traits\HasCurrentUserScopeTrait;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
@@ -16,9 +16,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Address extends Model implements KeyValueOptions
+class Address extends Model implements KeyValueOptionsContract
 {
-    use HasCurrentUserScope, HasFactory;
+    use HasCurrentUserScopeTrait, HasFactory;
 
     protected $fillable = [
         'user_id',

@@ -6,6 +6,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TaskResource\Pages;
 use App\Models\Task;
+use App\Traits\HasGetQueryForCurrentUserTrait;
+use App\Traits\HasTranslatedBreadcrumbAndNavigationTrait;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -16,10 +18,10 @@ use Illuminate\Support\Collection;
 
 class TaskResource extends Resource
 {
-    use HasGetQueryForCurrentUser {
+    use HasGetQueryForCurrentUserTrait {
         getEloquentQuery as getTaskQuery;
     }
-    use HasTranslatedBreadcrumbAndNavigation;
+    use HasTranslatedBreadcrumbAndNavigationTrait;
 
     protected static ?string $model = Task::class;
 

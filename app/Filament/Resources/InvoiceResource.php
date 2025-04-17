@@ -11,6 +11,8 @@ use App\Filament\Resources\InvoiceResource\RelationManagers\InvoiceHoursRelation
 use App\Models\Contract;
 use App\Models\Invoice;
 use App\Services\GeneratorService;
+use App\Traits\HasGetQueryForCurrentUserTrait;
+use App\Traits\HasTranslatedBreadcrumbAndNavigationTrait;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
@@ -31,8 +33,8 @@ use Illuminate\Validation\Rules\Unique;
 
 class InvoiceResource extends Resource
 {
-    use HasGetQueryForCurrentUser;
-    use HasTranslatedBreadcrumbAndNavigation;
+    use HasGetQueryForCurrentUserTrait;
+    use HasTranslatedBreadcrumbAndNavigationTrait;
 
     protected static ?string $model = Invoice::class;
 

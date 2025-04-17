@@ -7,6 +7,8 @@ namespace App\Filament\Resources;
 use App\Enums\CountryEnum;
 use App\Filament\Resources\AddressResource\Pages;
 use App\Models\Address;
+use App\Traits\HasEntitiesNavigationGroupTrait;
+use App\Traits\HasTranslatedBreadcrumbAndNavigationTrait;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -16,8 +18,8 @@ use Illuminate\Support\Arr;
 
 class AddressResource extends Resource
 {
-    use HasEntitiesNavigationGroup;
-    use HasTranslatedBreadcrumbAndNavigation;
+    use HasEntitiesNavigationGroupTrait;
+    use HasTranslatedBreadcrumbAndNavigationTrait;
 
     protected static ?string $model = Address::class;
 

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\KeyValueOptions;
+use App\Contracts\KeyValueOptionsContract;
 use App\Enums\CurrencyEnum;
 use App\Filament\Resources\CustomerResource;
 use App\Filament\Resources\SupplierResource;
-use App\Traits\HasCurrentUserScope;
+use App\Traits\HasCurrentUserScopeTrait;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -23,9 +23,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read Customer $customer
  * @property-read Supplier $supplier
  */
-class Contract extends Model implements KeyValueOptions
+class Contract extends Model implements KeyValueOptionsContract
 {
-    use HasCurrentUserScope, HasFactory;
+    use HasCurrentUserScopeTrait, HasFactory;
 
     protected $guarded = [];
 

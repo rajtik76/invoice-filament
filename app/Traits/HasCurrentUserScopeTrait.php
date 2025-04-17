@@ -7,7 +7,7 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 
-trait HasCurrentUserScope
+trait HasCurrentUserScopeTrait
 {
     #[Scope]
     protected function currentUser(Builder $builder): void

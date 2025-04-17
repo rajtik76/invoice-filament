@@ -6,6 +6,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SupplierResource\Pages;
 use App\Models\Supplier;
+use App\Traits\HasEntitiesNavigationGroupTrait;
+use App\Traits\HasTranslatedBreadcrumbAndNavigationTrait;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -15,8 +17,8 @@ use Illuminate\Support\Arr;
 
 class SupplierResource extends Resource
 {
-    use HasEntitiesNavigationGroup;
-    use HasTranslatedBreadcrumbAndNavigation;
+    use HasEntitiesNavigationGroupTrait;
+    use HasTranslatedBreadcrumbAndNavigationTrait;
 
     protected static ?string $model = Supplier::class;
 

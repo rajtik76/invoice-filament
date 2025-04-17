@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\KeyValueOptions;
+use App\Contracts\KeyValueOptionsContract;
 use App\Filament\Resources\ContractResource;
-use App\Traits\HasActiveScope;
-use App\Traits\HasCurrentUserScope;
+use App\Traits\HasActiveScopeTrait;
+use App\Traits\HasCurrentUserScopeTrait;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Select;
@@ -20,9 +20,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property-read User $user
  */
-class Task extends Model implements KeyValueOptions
+class Task extends Model implements KeyValueOptionsContract
 {
-    use HasActiveScope, HasCurrentUserScope, HasFactory;
+    use HasActiveScopeTrait, HasCurrentUserScopeTrait, HasFactory;
 
     protected $guarded = [];
 

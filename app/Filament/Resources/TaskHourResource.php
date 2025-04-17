@@ -10,6 +10,8 @@ use App\Models\Invoice;
 use App\Models\InvoiceHour;
 use App\Models\Task;
 use App\Models\TaskHour;
+use App\Traits\HasGetQueryForCurrentUserTrait;
+use App\Traits\HasTranslatedBreadcrumbAndNavigationTrait;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
@@ -24,8 +26,8 @@ use Illuminate\Support\Arr;
 
 class TaskHourResource extends Resource
 {
-    use HasGetQueryForCurrentUser;
-    use HasTranslatedBreadcrumbAndNavigation;
+    use HasGetQueryForCurrentUserTrait;
+    use HasTranslatedBreadcrumbAndNavigationTrait;
 
     protected static ?string $model = TaskHour::class;
 

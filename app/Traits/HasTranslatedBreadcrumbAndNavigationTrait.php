@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Resources;
+namespace App\Traits;
 
-trait HasTranslatedBreadcrumbAndNavigation
+trait HasTranslatedBreadcrumbAndNavigationTrait
 {
     /**
      * Get navigation label

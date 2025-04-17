@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\TaskHourResource\Pages;
 
-use App\Filament\Resources\HasTranslatedListPageTitle;
 use App\Filament\Resources\TaskHourResource;
 use App\Models\TaskHour;
+use App\Traits\HasTranslatedListPageTitleTrait;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Arr;
 
 class ListTaskHours extends ListRecords
 {
-    use HasTranslatedListPageTitle;
+    use HasTranslatedListPageTitleTrait;
 
     protected static string $resource = TaskHourResource::class;
 

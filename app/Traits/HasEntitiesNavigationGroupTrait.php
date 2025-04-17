@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Resources;
+namespace App\Traits;
 
 use Filament\Resources\Resource;
 
 /**
  * @mixin Resource
  */
-trait HasEntitiesNavigationGroup
+trait HasEntitiesNavigationGroupTrait
 {
     public static function getNavigationGroup(): ?string
     {

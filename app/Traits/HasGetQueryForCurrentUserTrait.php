@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Resources;
+namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 
-trait HasGetQueryForCurrentUser
+trait HasGetQueryForCurrentUserTrait
 {
     public static function getEloquentQuery(): Builder
     {

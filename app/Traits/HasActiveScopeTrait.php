@@ -6,7 +6,7 @@ namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 
-trait HasActiveScope
+trait HasActiveScopeTrait
 {
     public function scopeActive(Builder $builder): void
     {
