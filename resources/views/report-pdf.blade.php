@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('pdf.report.title') }}</title>
+    <title>{{ trans('pdf.report.title') }}</title>
     <style>
         /* Adjusted styles with minimized margins and proper page handling */
         body {
@@ -76,9 +76,9 @@
 
 <body>
 <div class="header">
-    {{ __('pdf.report.title') }} {{ $year }}/{{ $month }}<br>
+    {{ trans('pdf.report.title') }} {{ $year }}/{{ $month }}<br>
     <span style="font-size: 10px;">{{ data_get($contract, 'customer.name') }}</span><br>
-    <strong>{{ __('base.total') }}: {{ collect($content)->sum(fn(array $items) => collect($items)->sum('hours')) }} {{ __('base.hours') }}</strong>
+    <strong>{{ trans('base.total') }}: {{ collect($content)->sum(fn(array $items) => collect($items)->sum('hours')) }} {{ trans('base.hours') }}</strong>
 </div>
 
 @foreach ($content as $date => $tasks)
@@ -87,9 +87,9 @@
         <table class="table">
             <thead>
             <tr>
-                <th>{{ __('base.task') }}</th>
-                <th>{{ __('base.hours') }}</th>
-                <th>{{ __('base.comment') }}</th>
+                <th>{{ trans('base.task') }}</th>
+                <th>{{ trans('base.hours') }}</th>
+                <th>{{ trans('base.comment') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -109,7 +109,7 @@
             </tbody>
             <tfoot>
             <tr>
-                <th>{{ strtoupper(__('pdf.report.total')) }}</th>
+                <th>{{ strtoupper(trans('pdf.report.total')) }}</th>
                 <th>{{ number_format(collect($tasks)->sum('hours'), 1) }}</th>
                 <th></th>
             </tr>

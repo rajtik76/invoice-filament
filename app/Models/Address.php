@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\KeyValueOptions;
-use App\Enums\Country;
+use App\Contracts\KeyValueOptionsContract;
+use App\Enums\CountryEnum;
 use App\Filament\Resources\AddressResource;
-use App\Traits\HasCurrentUserScope;
+use App\Traits\HasCurrentUserScopeTrait;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
@@ -16,9 +16,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Address extends Model implements KeyValueOptions
+class Address extends Model implements KeyValueOptionsContract
 {
-    use HasCurrentUserScope, HasFactory;
+    use HasCurrentUserScopeTrait, HasFactory;
 
     protected $fillable = [
         'user_id',
@@ -29,7 +29,7 @@ class Address extends Model implements KeyValueOptions
     ];
 
     protected $casts = [
-        'country' => Country::class,
+        'country' => CountryEnum::class,
     ];
 
     /**
@@ -39,7 +39,8 @@ class Address extends Model implements KeyValueOptions
      */
     public static function getOptions(): array
     {
-        return self::currentUser()
+        return Address::query()
+            ->currentUser()
             ->orderBy('country')
             ->orderBy('city')
             ->orderBy('street')
@@ -74,7 +75,7 @@ class Address extends Model implements KeyValueOptions
                     Select::make('country')
                         ->label(trans('base.country'))
                         ->required()
-                        ->options(Country::options()),
+                        ->options(CountryEnum::options()),
                 ]),
         ];
     }

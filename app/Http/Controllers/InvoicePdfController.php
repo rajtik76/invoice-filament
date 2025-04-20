@@ -23,6 +23,15 @@ class InvoicePdfController extends Controller
         $customer = $invoice->contract->customer;
         $bank = $invoice->contract->supplier->bankAccount;
 
+        // Get invoice task hours
+        $invoiceTaskHours = $invoice->taskHours()->with('task')->latest('date')->get();
+
+        // Calculate invoice total hours
+        $invoiceTotalHours = $invoiceTaskHours->sum('hours');
+
+        // Calculate invoice total amount
+        $invoiceTotalAmount = $invoiceTotalHours * $invoice->contract->price_per_hour;
+
         $data = [
             'supplier' => [
                 'name' => $supplier->name,
@@ -49,9 +58,10 @@ class InvoicePdfController extends Controller
                 'date' => $invoice->created_at->format('Y-m-d'),
                 'dueDate' => $invoice->due_date->format('Y-m-d'),
                 'unit_price' => $invoice->contract->price_per_hour,
-                'subtotal' => $invoice->total_amount,
-                'totalAmount' => $invoice->total_amount,
-                'items' => $invoice->content,
+                'totalHours' => $invoiceTotalHours,
+                'subtotal' => $invoiceTotalAmount,
+                'totalAmount' => $invoiceTotalAmount,
+                'items' => $invoiceTaskHours,
                 'isReverseCharge' => $invoice->contract->reverse_charge,
                 'currency' => $invoice->contract->currency->getCurrencySymbol(),
             ],

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\KeyValueOptions;
-use App\Traits\HasCurrentUserScope;
+use App\Contracts\KeyValueOptionsContract;
+use App\Traits\HasCurrentUserScopeTrait;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\TextInput;
@@ -16,9 +16,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property-read Address $address
  */
-class Customer extends Model implements KeyValueOptions
+class Customer extends Model implements KeyValueOptionsContract
 {
-    use HasCurrentUserScope, HasFactory;
+    use HasCurrentUserScopeTrait, HasFactory;
 
     protected $guarded = [];
 
@@ -32,7 +32,8 @@ class Customer extends Model implements KeyValueOptions
      */
     public static function getOptions(): array
     {
-        return self::currentUser()
+        return Customer::query()
+            ->currentUser()
             ->orderBy('name')
             ->get()
             ->keyBy('id')

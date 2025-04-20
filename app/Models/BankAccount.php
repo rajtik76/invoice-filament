@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\KeyValueOptions;
-use App\Traits\HasCurrentUserScope;
+use App\Contracts\KeyValueOptionsContract;
+use App\Traits\HasCurrentUserScopeTrait;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BankAccount extends Model implements KeyValueOptions
+class BankAccount extends Model implements KeyValueOptionsContract
 {
-    use HasCurrentUserScope, HasFactory;
+    use HasCurrentUserScopeTrait, HasFactory;
 
     protected $guarded = [];
 
@@ -25,7 +25,8 @@ class BankAccount extends Model implements KeyValueOptions
      */
     public static function getOptions(): array
     {
-        return self::currentUser()
+        return BankAccount::query()
+            ->currentUser()
             ->orderBy('bank_name')
             ->orderBy('account_number')
             ->get()

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\KeyValueOptions;
-use App\Enums\Currency;
+use App\Contracts\KeyValueOptionsContract;
+use App\Enums\CurrencyEnum;
 use App\Filament\Resources\CustomerResource;
 use App\Filament\Resources\SupplierResource;
-use App\Traits\HasCurrentUserScope;
+use App\Traits\HasCurrentUserScopeTrait;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,15 +23,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read Customer $customer
  * @property-read Supplier $supplier
  */
-class Contract extends Model implements KeyValueOptions
+class Contract extends Model implements KeyValueOptionsContract
 {
-    use HasCurrentUserScope, HasFactory;
+    use HasCurrentUserScopeTrait, HasFactory;
 
     protected $guarded = [];
 
     protected $casts = [
         'signed_at' => 'date',
-        'currency' => Currency::class,
+        'currency' => CurrencyEnum::class,
     ];
 
     /**
@@ -38,7 +39,8 @@ class Contract extends Model implements KeyValueOptions
      */
     public static function getOptions(): array
     {
-        return self::currentUser()
+        return Contract::query()
+            ->currentUser()
             ->orderBy('name')
             ->get()
             ->keyBy('id')
@@ -69,6 +71,12 @@ class Contract extends Model implements KeyValueOptions
     public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class);
+    }
+
+    #[Scope]
+    protected function active(Builder $query): void
+    {
+        $query->where('active', true);
     }
 
     /**
@@ -137,7 +145,7 @@ class Contract extends Model implements KeyValueOptions
             Forms\Components\Select::make('currency')
                 ->label(trans('base.currency'))
                 ->required()
-                ->options(Currency::class),
+                ->options(CurrencyEnum::class),
 
             Forms\Components\Toggle::make('reverse_charge')
                 ->label(trans('base.reverse_charge'))

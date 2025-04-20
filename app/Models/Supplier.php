@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Filament\Resources\BankAccountResource;
-use App\Traits\HasCurrentUserScope;
+use App\Traits\HasCurrentUserScopeTrait;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Select;
@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Supplier extends Model
 {
-    use HasCurrentUserScope, HasFactory;
+    use HasCurrentUserScopeTrait, HasFactory;
 
     protected $guarded = [];
 
@@ -39,7 +39,8 @@ class Supplier extends Model
      */
     public static function getOptions(): array
     {
-        return self::currentUser()
+        return Supplier::query()
+            ->currentUser()
             ->orderBy('name')
             ->get()
             ->keyBy('id')

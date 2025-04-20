@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\Currency;
+use App\Enums\CurrencyEnum;
 use App\Models\Contract;
 use App\Models\Customer;
 use App\Models\Supplier;
@@ -24,9 +24,9 @@ class ContractFactory extends Factory
             'supplier_id' => Supplier::factory(),
             'name' => fn (array $attributes) => Customer::find($attributes['customer_id'])->name . ' contract',
             'signed_at' => $this->faker->unique()->dateTimeBetween(),
-            'currency' => $this->faker->randomElement(Currency::cases()),
+            'currency' => $this->faker->randomElement(CurrencyEnum::cases()),
             'reverse_charge' => $this->faker->boolean(),
-            'price_per_hour' => fn (array $attributes) => $attributes['currency'] === Currency::CZK
+            'price_per_hour' => fn (array $attributes) => $attributes['currency'] === CurrencyEnum::CZK
                 ? $this->faker->randomFloat(2, 300, 1000)
                 : $this->faker->randomFloat(2, 10, 50),
             'active' => true,
