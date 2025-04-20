@@ -11,7 +11,7 @@ enum CountryEnum: string
 
     public function countryName(): string
     {
-        return trans('enum.country_name.' . $this->value);
+        return trans('enum.country.' . $this->value);
     }
 
     /**
