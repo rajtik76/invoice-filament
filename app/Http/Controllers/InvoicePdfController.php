@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use App\Models\Task;
+use App\Models\TaskHour;
 use App\Services\GeneratorService;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Fluent;
 
 use function Filament\authorize;
 
@@ -24,7 +28,22 @@ class InvoicePdfController extends Controller
         $bank = $invoice->contract->supplier->bankAccount;
 
         // Get invoice task hours
-        $invoiceTaskHours = $invoice->taskHours()->with('task')->latest('date')->get();
+        $invoiceTaskHours = $invoice->taskHours()
+            ->with('task')
+            ->get()
+            ->groupBy('task_id')
+            ->map(function (/** @var Collection<TaskHour> $group */ Collection $group): Fluent {
+                /** @var TaskHour $taskHour */
+                $taskHour = $group->first();
+                $task = $taskHour->task;
+
+                return new Fluent([
+                    'task' => $task,
+                    'task_name' => $task->name,
+                    'hours' => $group->sum('hours'),
+                ]);
+            })
+            ->sortBy('task_name');
 
         // Calculate invoice total hours
         $invoiceTotalHours = $invoiceTaskHours->sum('hours');
