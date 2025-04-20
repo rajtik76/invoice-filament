@@ -78,39 +78,43 @@
 <div class="header">
     {{ trans('pdf.report.title') }} {{ $year }}/{{ $month }}<br>
     <span style="font-size: 10px;">{{ data_get($contract, 'customer.name') }}</span><br>
-    <strong>{{ trans('base.total') }}: {{ collect($content)->sum(fn(array $items) => collect($items)->sum('hours')) }} {{ trans('base.hours') }}</strong>
+    <strong>{{ trans('label.total') }}: {{ $totalHours }} {{ trans('label.hours') }}</strong>
 </div>
 
-@foreach ($content as $date => $tasks)
+@foreach ($taskHoursGroupedByDate as $date => $taskHours)
     <div class="table-container">
         <div class="new-day-header">{{ $date }}</div>
         <table class="table">
             <thead>
             <tr>
-                <th>{{ trans('base.task') }}</th>
-                <th>{{ trans('base.hours') }}</th>
-                <th>{{ trans('base.comment') }}</th>
+                <th>{{ trans('label.task') }}</th>
+                <th>{{ trans('label.hours') }}</th>
+                <th>{{ trans('label.comment') }}</th>
             </tr>
             </thead>
             <tbody>
-            @foreach ($tasks as $task)
+            @foreach ($taskHours as $taskHour)
+                @php
+                    /** @var \App\Models\TaskHour $taskHour */
+                @endphp
                 <tr>
                     <td>
-                        @if (!empty($task['url']))
-                            <a href="{{ $task['url'] }}" target="_blank" class="task-name">{{ $task['name'] }}</a>
+                        @if (!empty($taskHour->task->url))
+                            <a href="{{ $taskHour->task->url }}" target="_blank"
+                               class="task-name">{{ $taskHour->task->name }}</a>
                         @else
-                            <span class="task-name">{{ $task['name'] }}</span>
+                            <span class="task-name">{{ $taskHour->task->name }}</span>
                         @endif
                     </td>
-                    <td>{{ number_format($task['hours'], 1) }}</td>
-                    <td class="comment">{{ $task['comment'] }}</td>
+                    <td>{{ number_format($taskHour->hours, 1) }}</td>
+                    <td class="comment">{{ $taskHour->comment }}</td>
                 </tr>
             @endforeach
             </tbody>
             <tfoot>
             <tr>
                 <th>{{ strtoupper(trans('pdf.report.total')) }}</th>
-                <th>{{ number_format(collect($tasks)->sum('hours'), 1) }}</th>
+                <th>{{ number_format(collect($taskHours)->sum('hours'), 1) }}</th>
                 <th></th>
             </tr>
             </tfoot>

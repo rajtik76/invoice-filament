@@ -13,6 +13,6 @@ trait HasEntitiesNavigationGroupTrait
 {
     public static function getNavigationGroup(): ?string
     {
-        return trans('base.entities');
+        return trans('label.entities');
     }
 }

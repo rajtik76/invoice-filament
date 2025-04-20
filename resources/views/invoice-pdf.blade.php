@@ -58,6 +58,10 @@
             text-align: right;
         }
 
+        .text-center {
+            text-align: center;
+        }
+
         .highlight {
             color: #e53935;
             font-weight: bold;
@@ -84,6 +88,10 @@
             background-color: #fcfcfc;
         }
 
+        .avoid-page-break {
+            page-break-inside: avoid;
+        }
+
         .payment-info {
             margin-top: 15px;
             padding: 12px;
@@ -93,22 +101,11 @@
             font-size: 11px;
         }
 
-        .summary td {
-            padding: 6px 8px;
-        }
-
-        .summary .total-row {
-            font-weight: bold;
-            background-color: #2A3F54;
-            color: #ffffff;
-        }
-
         .reverse-charge {
             font-size: 12px;
             color: #d32f2f;
             margin-top: 20px;
             text-align: center;
-            border-top: 1px solid #dfe5ec;
             padding-top: 10px;
             font-weight: bold;
         }
@@ -202,7 +199,7 @@
                         {{ $item->task->name }}
                     @endif
                 </td>
-                <td class="text-right">{{ number_format($item->hours, 1) }} {{ trans('label.hours') }}</td>
+                <td class="text-right">{{ number_format($item->hours, 1) }} {{ trans('label.shorts.hours') }}</td>
                 <td class="text-right">{{ number_format($invoice['unit_price'], 2) }} {{ $invoice['currency'] }}</td>
                 <td class="text-right">{{ number_format($invoice['unit_price'] * $item->hours, 2) }} {{ $invoice['currency'] }}</td>
             </tr>
@@ -226,13 +223,15 @@
         @endif
         <tr class="total-row">
             <th><strong>{{ trans('label.total') }}:</strong></th>
-            <th class="text-right">{{ number_format($invoice['totalHours'], 1) }} {{ trans('label.hours') }}</th>
-            <th></th>
+            <th class="text-right">{{ number_format($invoice['totalHours'], 1) }} {{ trans('label.shorts.hours') }}</th>
+            <th class="text-center">---</th>
             <th class="text-right">{{ number_format($invoice['totalAmount'], 2) }} {{ $invoice['currency'] }}</th>
         </tr>
         </tfoot>
     </table>
+</div>
 
+<div class="avoid-page-break">
     <!-- Reverse Charge Notice -->
     @if ($invoice['isReverseCharge'])
         <div class="reverse-charge">
@@ -246,10 +245,10 @@
         {{ trans('label.bank_name') }}: {{ $bank['name'] }}<br>
         {{ trans('label.bank_account') }}: {{ $bank['account'] }}/{{ $bank['code'] }}<br>
         <span class="payment-highlight">
-            {{ trans('pdf.invoice.iban') }}: {{ $bank['iban'] }}<br>
-            {{ trans('pdf.invoice.swift') }}: {{ $bank['swift'] }}<br>
-            {{ trans('pdf.invoice.reference_id') }}: {{ $invoice['number'] }}
-        </span>
+                {{ trans('pdf.invoice.iban') }}: {{ $bank['iban'] }}<br>
+                {{ trans('pdf.invoice.swift') }}: {{ $bank['swift'] }}<br>
+                {{ trans('pdf.invoice.reference_id') }}: {{ $invoice['number'] }}
+            </span>
     </div>
 
     <!-- Footer -->
