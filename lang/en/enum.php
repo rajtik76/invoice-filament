@@ -7,4 +7,9 @@ return [
         'draft' => 'Draft',
         'issued' => 'Issued',
     ],
+
+    'country' => [
+        'DE' => 'Germany',
+        'CZ' => 'Czech Republic',
+    ],
 ];
