@@ -171,9 +171,9 @@
         <tr>
             <td>
                 <strong>{{ trans('label.invoice') }} #:</strong> {{ $invoice['number'] }}<br>
-                <strong>{{ trans('label.issue_date') }}:</strong> {{ $invoice['date'] }}
             </td>
             <td class="text-right">
+                <strong>{{ trans('label.issue_date') }}:</strong> {{ $invoice['date'] }}<br>
                 <strong>{{ trans('label.due_date') }}:</strong> <span class="highlight">{{ $invoice['dueDate'] }}</span>
             </td>
         </tr>
