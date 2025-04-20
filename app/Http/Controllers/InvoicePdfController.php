@@ -74,7 +74,7 @@ class InvoicePdfController extends Controller
 
             'invoice' => [
                 'number' => $invoice->number,
-                'date' => $invoice->created_at->format('Y-m-d'),
+                'date' => $invoice->issue_date->format('Y-m-d'),
                 'dueDate' => $invoice->due_date->format('Y-m-d'),
                 'unit_price' => $invoice->contract->price_per_hour,
                 'totalHours' => $invoiceTotalHours,
