@@ -11,7 +11,8 @@ return [
     'due_date' => 'Due date',
     'amount' => 'Amount',
     'edit_invoice' => 'Edit invoice',
-    'pdf' => 'PDF',
+    'invoice_pdf' => 'Invoice PDF',
+    'report_pdf' => 'Report PDF',
     'create_contract' => 'Create Contract',
     'create_invoice' => 'Create Invoice',
     'task' => 'Task',
@@ -68,5 +69,9 @@ return [
                 'null' => 'All',
             ],
         ],
+    ],
+
+    'shorts' => [
+        'hours' => 'h',
     ],
 ];

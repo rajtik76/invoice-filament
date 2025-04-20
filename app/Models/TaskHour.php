@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Traits\HasCurrentUserScopeTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
  * @property-read User $user
  * @property-read Task $task
  * @property-read Invoice|null $invoice
+ * @property-read Carbon $date
  */
 class TaskHour extends Model
 {

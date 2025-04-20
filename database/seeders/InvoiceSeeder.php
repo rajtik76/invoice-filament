@@ -4,19 +4,62 @@ namespace Database\Seeders;
 
 use App\Models\Contract;
 use App\Models\Invoice;
+use App\Models\InvoiceHour;
 use App\Models\Task;
 use App\Models\TaskHour;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class InvoiceSeeder extends Seeder
 {
+    private const int LongInvoiceCount = 15;
+
     public function run(): void
     {
         foreach (User::all() as $user) {
             // Get a random contract
             $userContractsInRandomOrder = Contract::where('user_id', $user->id)->inRandomOrder()->get();
             $contract = $userContractsInRandomOrder->first();
+
+            /*
+             * LONG INVOICE START
+             */
+
+            // Create one invoice with 30 tasks to have a long invoice
+            $longInvoiceTasks = Task::factory()
+                ->count(self::LongInvoiceCount)
+                ->recycle([$user, $contract])
+                ->create();
+
+            // Create one task hour per a long invoice task
+            foreach ($longInvoiceTasks as $longInvoiceTask) {
+                TaskHour::factory()
+                    ->recycle([$user, $longInvoiceTask])
+                    ->create();
+            }
+
+            // Create a long invoice
+            $longInvoice = Invoice::factory()
+                ->recycle([$user, $contract])
+                ->issued()
+                ->create();
+
+            // Assign task hours to the long invoice
+            InvoiceHour::factory()
+                ->count(self::LongInvoiceCount)
+                ->recycle($longInvoice)
+                ->state(new Sequence(
+                    ...TaskHour::whereIntegerInRaw('task_id', $longInvoiceTasks->pluck('id'))
+                        ->get()
+                        ->map(fn (TaskHour $item) => ['task_hour_id' => $item->id])
+                        ->toArray())
+                )
+                ->create();
+
+            /*
+             * LONG INVOICE END
+             */
 
             // Create 6 tasks per contract
             $contractTasks = Task::factory()
@@ -58,6 +101,7 @@ class InvoiceSeeder extends Seeder
                     ->when($startIndex + 3 > $contractTasks->count(), function ($collection) use ($contractTasks) {
                         // If we need to wrap around to the beginning of the collection
                         $remaining = 3 - $collection->count();
+
                         return $collection->concat($contractTasks->slice(0, $remaining));
                     });
 
@@ -72,7 +116,7 @@ class InvoiceSeeder extends Seeder
                     // Attach these hours to the current invoice
                     foreach ($hoursToAssign as $hour) {
                         $invoice->invoiceHours()->create([
-                            'task_hour_id' => $hour->id
+                            'task_hour_id' => $hour->id,
                         ]);
                     }
                 }
