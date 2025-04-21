@@ -17,6 +17,7 @@ return [
     'create_invoice' => 'Create Invoice',
     'task' => 'Task',
     'invoice' => 'Invoice',
+    'report' => 'Report',
     'contract_name' => 'Contract name',
     'customer' => 'Customer',
     'supplier' => 'Supplier',

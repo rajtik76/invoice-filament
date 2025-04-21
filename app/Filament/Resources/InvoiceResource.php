@@ -151,60 +151,62 @@ class InvoiceResource extends Resource
                     ->options(InvoiceStatusEnum::translatedCases()),
             ])
             ->actions([
-                // ISSUE
-                Tables\Actions\Action::make('issue')
-                    ->label(trans('label.issue'))
-                    ->visible(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Draft)
-                    ->color(Color::Blue)
-                    ->icon('heroicon-o-document-currency-dollar')
-                    ->form([
-                        Section::make([
-                            DatePicker::make('issue_date')
-                                ->label(trans('label.issue_date'))
-                                ->default(now()),
-                            DatePicker::make('due_date')
-                                ->label(trans('label.due_date'))
-                                ->default(now()->addDays(7)),
-                        ])->columns(),
-                    ])
-                    ->action(function (array $data, Invoice $record): void {
-                        $record->update([
-                            'status' => InvoiceStatusEnum::Issued,
-                            'issue_date' => $data['issue_date'],
-                            'due_date' => $data['due_date'],
-                        ]);
-                    }),
+                Tables\Actions\ActionGroup::make([
+                    // ISSUE
+                    Tables\Actions\Action::make('issue')
+                        ->label(trans('label.issue'))
+                        ->visible(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Draft)
+                        ->color(Color::Blue)
+                        ->icon('heroicon-o-document-currency-dollar')
+                        ->form([
+                            Section::make([
+                                DatePicker::make('issue_date')
+                                    ->label(trans('label.issue_date'))
+                                    ->default(now()),
+                                DatePicker::make('due_date')
+                                    ->label(trans('label.due_date'))
+                                    ->default(now()->addDays(7)),
+                            ])->columns(),
+                        ])
+                        ->action(function (array $data, Invoice $record): void {
+                            $record->update([
+                                'status' => InvoiceStatusEnum::Issued,
+                                'issue_date' => $data['issue_date'],
+                                'due_date' => $data['due_date'],
+                            ]);
+                        }),
 
-                // Invoice PDF
-                Tables\Actions\Action::make('invoice_pdf')
-                    ->label(trans('label.invoice_pdf'))
-                    ->icon('heroicon-o-arrow-down-tray')
-                    ->url(fn (Invoice $record): string => route('invoice.pdf', ['invoice' => $record->id]))
-                    ->openUrlInNewTab()
-                    ->color(Color::Green)
-                    ->hidden(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Draft),
+                    // Invoice PDF
+                    Tables\Actions\Action::make('invoice_pdf')
+                        ->label(trans('label.invoice'))
+                        ->icon('heroicon-o-document')
+                        ->url(fn (Invoice $record): string => route('invoice.pdf', ['invoice' => $record->id]))
+                        ->openUrlInNewTab()
+                        ->color(Color::Sky)
+                        ->hidden(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Draft),
 
-                // Report PDF
-                Tables\Actions\Action::make('report_pdf')
-                    ->label(trans('label.report_pdf'))
-                    ->icon('heroicon-o-arrow-down-tray')
-                    ->url(fn (Invoice $record): string => route('invoice.report.pdf', ['invoice' => $record->id]))
-                    ->openUrlInNewTab()
-                    ->color(Color::Green)
-                    ->hidden(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Draft),
+                    // Report PDF
+                    Tables\Actions\Action::make('report_pdf')
+                        ->label(trans('label.report'))
+                        ->icon('heroicon-o-document')
+                        ->url(fn (Invoice $record): string => route('invoice.report.pdf', ['invoice' => $record->id]))
+                        ->openUrlInNewTab()
+                        ->color(Color::Sky)
+                        ->hidden(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Draft),
 
-                // VIEW
-                Tables\Actions\ViewAction::make('view')
-                    ->label(trans('label.view'))
-                    ->visible(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Issued),
+                    // VIEW
+                    Tables\Actions\ViewAction::make('view')
+                        ->label(trans('label.view'))
+                        ->visible(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Issued),
 
-                // EDIT
-                Tables\Actions\EditAction::make('edit')
-                    ->modalHeading(trans('label.edit_invoice'))
-                    ->hidden(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Issued),
+                    // EDIT
+                    Tables\Actions\EditAction::make('edit')
+                        ->modalHeading(trans('label.edit_invoice'))
+                        ->hidden(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Issued),
 
-                // DELETE
-                Tables\Actions\DeleteAction::make(),
+                    // DELETE
+                    Tables\Actions\DeleteAction::make(),
+                ]),
             ])
             ->bulkActions([
                 //
