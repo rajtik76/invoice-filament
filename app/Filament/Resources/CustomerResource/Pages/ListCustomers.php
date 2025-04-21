@@ -18,8 +18,8 @@ class ListCustomers extends ListRecords
         return [
             Actions\CreateAction::make()
                 ->slideOver()
-                ->label(trans('base.create_customer'))
-                ->modalHeading(trans('base.create_customer'))
+                ->label(trans('label.create_customer'))
+                ->modalHeading(trans('label.create_customer'))
                 ->using(function (array $data): void {
                     CustomerResource::createRecordForCurrentUser($data);
                 }),

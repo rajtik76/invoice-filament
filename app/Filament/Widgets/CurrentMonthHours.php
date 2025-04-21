@@ -10,6 +10,8 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class CurrentMonthHours extends BaseWidget
 {
+    protected static ?string $pollingInterval = null;
+
     protected function getStats(): array
     {
         return [

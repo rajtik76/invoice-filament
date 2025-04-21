@@ -63,7 +63,7 @@ class Task extends Model implements KeyValueOptionsContract
                 ->columns(1)
                 ->schema([
                     Select::make('contract_id')
-                        ->label(trans('base.contract'))
+                        ->label(trans('label.contract'))
                         ->relationship(
                             name: 'contract',
                             titleAttribute: 'name',
@@ -73,7 +73,7 @@ class Task extends Model implements KeyValueOptionsContract
                                     ->orderBy('name');
                             }
                         )
-                        ->createOptionModalHeading(trans('base.create_contract'))
+                        ->createOptionModalHeading(trans('label.create_contract'))
                         ->createOptionForm(Contract::getForm())
                         ->createOptionUsing(function (array $data): void {
                             ContractResource::createRecordForCurrentUser($data);
@@ -90,7 +90,7 @@ class Task extends Model implements KeyValueOptionsContract
                         ->required(),
 
                     Forms\Components\TextInput::make('name')
-                        ->label(trans('base.task_name'))
+                        ->label(trans('label.task_name'))
                         ->required()
                         ->maxLength(255)
                         ->unique(ignoreRecord: true),
@@ -102,12 +102,12 @@ class Task extends Model implements KeyValueOptionsContract
                         ->rule('url'),
 
                     Forms\Components\Textarea::make('note')
-                        ->label(trans('base.note'))
+                        ->label(trans('label.note'))
                         ->maxLength(255)
                         ->default(null),
 
                     Forms\Components\Toggle::make('active')
-                        ->label(trans('base.active'))
+                        ->label(trans('label.active'))
                         ->required()
                         ->default(true),
                 ]),

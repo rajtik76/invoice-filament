@@ -18,8 +18,8 @@ class ListBankAccounts extends ListRecords
         return [
             Actions\CreateAction::make()
                 ->slideOver()
-                ->label(trans('base.create_bank_account'))
-                ->modalHeading(trans('base.create_bank_account'))
+                ->label(trans('label.create_bank_account'))
+                ->modalHeading(trans('label.create_bank_account'))
                 ->using(function (array $data) {
                     BankAccountResource::createRecordForCurrentUser($data);
                 }),

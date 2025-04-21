@@ -20,8 +20,8 @@ class ListTasks extends ListRecords
         return [
             Actions\CreateAction::make()
                 ->slideOver()
-                ->label(trans('base.create_task'))
-                ->modalHeading(trans('base.create_task'))
+                ->label(trans('label.create_task'))
+                ->modalHeading(trans('label.create_task'))
                 ->using(function (array $data) {
                     TaskResource::createRecordForCurrentUser($data);
                 }),

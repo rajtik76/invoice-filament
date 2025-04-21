@@ -37,27 +37,27 @@ class SupplierResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label(trans('base.supplier'))
+                    ->label(trans('label.supplier'))
                     ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('registration_number')
-                    ->label(trans('base.registration_number'))
+                    ->label(trans('label.registration_number'))
                     ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('vat_number')
-                    ->label(trans('base.vat'))
+                    ->label(trans('label.vat'))
                     ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('email')
-                    ->label(trans('base.email'))
+                    ->label(trans('label.email'))
                     ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('phone')
-                    ->label(trans('base.phone'))
+                    ->label(trans('label.phone'))
                     ->sortable()
                     ->searchable(),
             ])
@@ -66,7 +66,7 @@ class SupplierResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->modalHeading(trans('base.edit_supplier'))
+                    ->modalHeading(trans('label.edit_supplier'))
                     ->slideOver(),
             ])
             ->bulkActions([

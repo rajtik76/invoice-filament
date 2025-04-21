@@ -37,17 +37,17 @@ class CustomerResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label(trans('base.customer'))
+                    ->label(trans('label.customer'))
                     ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('registration_number')
-                    ->label(trans('base.registration_number'))
+                    ->label(trans('label.registration_number'))
                     ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('vat_number')
-                    ->label(trans('base.vat'))
+                    ->label(trans('label.vat'))
                     ->sortable()
                     ->searchable(),
             ])
@@ -57,7 +57,7 @@ class CustomerResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->slideOver()
-                    ->modalHeading(trans('base.edit_customer')),
+                    ->modalHeading(trans('label.edit_customer')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

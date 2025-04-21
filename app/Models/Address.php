@@ -57,7 +57,7 @@ class Address extends Model implements KeyValueOptionsContract
                 ->columns(1)
                 ->schema([
                     TextInput::make('street')
-                        ->label(trans('base.street'))
+                        ->label(trans('label.street'))
                         ->required()
                         ->maxLength(255),
                 ]),
@@ -65,15 +65,15 @@ class Address extends Model implements KeyValueOptionsContract
                 ->columns(3)
                 ->schema([
                     TextInput::make('city')
-                        ->label(trans('base.city'))
+                        ->label(trans('label.city'))
                         ->required()
                         ->maxLength(255),
                     TextInput::make('zip')
-                        ->label(trans('base.zip'))
+                        ->label(trans('label.zip'))
                         ->required()
                         ->maxLength(255),
                     Select::make('country')
-                        ->label(trans('base.country'))
+                        ->label(trans('label.country'))
                         ->required()
                         ->options(CountryEnum::options()),
                 ]),
@@ -86,7 +86,7 @@ class Address extends Model implements KeyValueOptionsContract
     public static function getSelectWithNewOption(): Select
     {
         return Select::make('address_id')
-            ->label(trans('base.address'))
+            ->label(trans('label.address'))
             ->relationship(
                 name: 'address',
                 modifyQueryUsing: function (Builder $query): void {
@@ -97,7 +97,7 @@ class Address extends Model implements KeyValueOptionsContract
                 }
             )
             ->getOptionLabelFromRecordUsing(fn (Address $record): string => "{$record->street}, {$record->zip} {$record->city}, {$record->country->countryName()}")
-            ->createOptionModalHeading(trans('base.create_address'))
+            ->createOptionModalHeading(trans('label.create_address'))
             ->createOptionForm(Address::getForm())
             ->createOptionUsing(function (array $data): void {
                 AddressResource::createAddressForCurrentUser($data);

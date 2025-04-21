@@ -37,15 +37,15 @@ class BankAccountResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('bank_name')
-                    ->label(trans('base.bank_name'))
+                    ->label(trans('label.bank_name'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('account_number')
-                    ->label(trans('base.bank_account'))
+                    ->label(trans('label.bank_account'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bank_code')
-                    ->label(trans('base.bank_code'))
+                    ->label(trans('label.bank_code'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('iban')
@@ -63,7 +63,7 @@ class BankAccountResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->slideOver()
-                    ->modalHeading(trans('base.edit_bank_account')),
+                    ->modalHeading(trans('label.edit_bank_account')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

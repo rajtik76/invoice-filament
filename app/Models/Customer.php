@@ -56,17 +56,17 @@ class Customer extends Model implements KeyValueOptionsContract
 
                     Split::make([
                         TextInput::make('name')
-                            ->label(trans('base.customer'))
+                            ->label(trans('label.customer'))
                             ->required()
                             ->maxLength(255),
 
                         TextInput::make('registration_number')
-                            ->label(trans('base.registration_number'))
+                            ->label(trans('label.registration_number'))
                             ->maxLength(255)
                             ->default(null),
 
                         TextInput::make('vat_number')
-                            ->label(trans('base.vat'))
+                            ->label(trans('label.vat'))
                             ->required()
                             ->maxLength(255),
                     ]),

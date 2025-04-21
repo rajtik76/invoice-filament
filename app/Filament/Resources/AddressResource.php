@@ -37,19 +37,19 @@ class AddressResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('street')
-                    ->label(trans('base.street'))
+                    ->label(trans('label.street'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('city')
-                    ->label(trans('base.city'))
+                    ->label(trans('label.city'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('zip')
-                    ->label(trans('base.zip'))
+                    ->label(trans('label.zip'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('country')
-                    ->label(trans('base.country'))
+                    ->label(trans('label.country'))
                     ->sortable()
                     ->searchable()
                     ->formatStateUsing(fn (CountryEnum $state): string => $state->countryName()),
@@ -60,7 +60,7 @@ class AddressResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->slideOver()
-                    ->modalHeading(trans('base.edit_address')),
+                    ->modalHeading(trans('label.edit_address')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

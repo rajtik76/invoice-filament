@@ -18,8 +18,8 @@ class ListContracts extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->label(trans('base.create_contract'))
-                ->modalHeading(trans('base.create_contract'))
+                ->label(trans('label.create_contract'))
+                ->modalHeading(trans('label.create_contract'))
                 ->slideOver()
                 ->using(function (array $data): Contract {
                     return ContractResource::createRecordForCurrentUser($data);

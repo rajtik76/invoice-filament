@@ -38,30 +38,30 @@ class ContractResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\IconColumn::make('active')
-                    ->label(trans('base.active'))
+                    ->label(trans('label.active'))
                     ->boolean(),
 
                 Tables\Columns\TextColumn::make('customer.name')
-                    ->label(trans('base.customer'))
+                    ->label(trans('label.customer'))
                     ->numeric()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('supplier.name')
-                    ->label(trans('base.supplier'))
+                    ->label(trans('label.supplier'))
                     ->numeric()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('name')
-                    ->label(trans('base.contract'))
+                    ->label(trans('label.contract'))
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('signed_at')
-                    ->label(trans('base.signed_at'))
+                    ->label(trans('label.signed_at'))
                     ->date('d.m.Y')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('price_per_hour')
-                    ->label(trans('base.price_per_hour'))
+                    ->label(trans('label.price_per_hour'))
                     ->formatStateUsing(fn (Contract $record) => Number::currency($record->price_per_hour, $record->currency->value, app()->getLocale()))
                     ->sortable(),
             ])
@@ -70,7 +70,7 @@ class ContractResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->modalHeading(trans('base.edit_contract'))
+                    ->modalHeading(trans('label.edit_contract'))
                     ->slideOver(),
             ])
             ->bulkActions([

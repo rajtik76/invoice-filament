@@ -60,19 +60,19 @@ class Supplier extends Model
                 ->columns(1)
                 ->schema([
                     Forms\Components\TextInput::make('name')
-                        ->label(trans('base.name'))
+                        ->label(trans('label.name'))
                         ->required()
                         ->maxLength(255),
 
                     Forms\Components\Split::make([
                         Forms\Components\TextInput::make('email')
-                            ->label(trans('base.email'))
+                            ->label(trans('label.email'))
                             ->email()
                             ->required()
                             ->maxLength(255),
 
                         Forms\Components\TextInput::make('phone')
-                            ->label(trans('base.phone'))
+                            ->label(trans('label.phone'))
                             ->tel()
                             ->required()
                             ->maxLength(255),
@@ -80,12 +80,12 @@ class Supplier extends Model
 
                     Forms\Components\Split::make([
                         Forms\Components\TextInput::make('registration_number')
-                            ->label(trans('base.registration_number'))
+                            ->label(trans('label.registration_number'))
                             ->required()
                             ->maxLength(255),
 
                         Forms\Components\TextInput::make('vat_number')
-                            ->label(trans('base.vat'))
+                            ->label(trans('label.vat'))
                             ->required()
                             ->maxLength(255),
                     ]),
@@ -96,7 +96,7 @@ class Supplier extends Model
 
                     Forms\Components\Split::make([
                         Select::make('bank_account_id')
-                            ->label(trans('base.bank_account'))
+                            ->label(trans('label.bank_account'))
                             ->relationship(
                                 name: 'bankAccount',
                                 modifyQueryUsing: function (Builder $query): void {
@@ -106,7 +106,7 @@ class Supplier extends Model
                                 }
                             )
                             ->getOptionLabelFromRecordUsing(fn (BankAccount $record): string => "{$record->bank_name}, {$record->account_number} / {$record->bank_code}")
-                            ->createOptionModalHeading(trans('base.create_bank_account'))
+                            ->createOptionModalHeading(trans('label.create_bank_account'))
                             ->createOptionForm(BankAccount::getForm())
                             ->createOptionUsing(function (array $data): void {
                                 BankAccountResource::createRecordForCurrentUser($data);

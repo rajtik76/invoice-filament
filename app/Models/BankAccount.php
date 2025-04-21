@@ -48,18 +48,18 @@ class BankAccount extends Model implements KeyValueOptionsContract
                 ->schema([
                     Split::make([
                         TextInput::make('bank_name')
-                            ->label(trans('base.bank_name'))
+                            ->label(trans('label.bank_name'))
                             ->required()
                             ->maxLength(255),
                     ]),
                     Split::make([
                         Split::make([
                             TextInput::make('account_number')
-                                ->label(trans('base.bank_account'))
+                                ->label(trans('label.bank_account'))
                                 ->required()
                                 ->maxLength(255),
                             TextInput::make('bank_code')
-                                ->label(trans('base.bank_code'))
+                                ->label(trans('label.bank_code'))
                                 ->required()
                                 ->maxLength(255)
                                 ->grow(false),

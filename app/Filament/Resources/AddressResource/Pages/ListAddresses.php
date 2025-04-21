@@ -17,9 +17,9 @@ class ListAddresses extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->label(trans('base.create_address'))
+                ->label(trans('label.create_address'))
                 ->slideOver()
-                ->modalHeading(trans('base.create_address'))
+                ->modalHeading(trans('label.create_address'))
                 ->using(function (array $data): void {
                     self::$resource::createAddressForCurrentUser($data);
                 }),

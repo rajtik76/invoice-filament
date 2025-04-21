@@ -41,43 +41,43 @@ class TaskResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('contract.customer.name')
-                    ->label(trans('base.customer'))
+                    ->label(trans('label.customer'))
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('name')
-                    ->label(trans('base.task'))
+                    ->label(trans('label.task'))
                     ->searchable()
                     ->sortable()
                     ->url(fn (Task $record) => $record->url)
                     ->openUrlInNewTab(),
 
                 Tables\Columns\TextColumn::make('task_hours_sum_hours')
-                    ->label(trans('base.hours'))
+                    ->label(trans('label.hours'))
                     ->getStateUsing(fn ($record) => number_format(floatval($record->task_hours_sum_hours), 1))
                     ->color('info')
                     ->url(fn (Task $record) => TaskHourResource::getUrl(parameters: ['tableFilters[task][value]' => $record->id])),
 
                 Tables\Columns\ToggleColumn::make('active')
-                    ->label(trans('base.active'))
+                    ->label(trans('label.active'))
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\Filter::make('active')
-                    ->label(trans('base.active'))
+                    ->label(trans('label.active'))
                     ->query(fn (Builder $query) => $query->where('active', true))
                     ->default(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->slideOver()
-                    ->modalHeading(trans('base.edit_task')),
+                    ->modalHeading(trans('label.edit_task')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('deactivate')
-                        ->label(trans('base.deactivate_task'))
+                        ->label(trans('label.deactivate_task'))
                         ->action(function (Collection $records) {
                             $records->each(function (Task $record) {
                                 $record->update(['active' => false]);

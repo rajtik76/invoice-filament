@@ -88,7 +88,7 @@ class Contract extends Model implements KeyValueOptionsContract
     {
         return [
             Forms\Components\Select::make('customer_id')
-                ->label(trans('base.customer'))
+                ->label(trans('label.customer'))
                 ->relationship(
                     name: 'customer',
                     titleAttribute: 'name',
@@ -97,7 +97,7 @@ class Contract extends Model implements KeyValueOptionsContract
                             ->orderBy('name');
                     }
                 )
-                ->createOptionModalHeading(trans('base.create_customer'))
+                ->createOptionModalHeading(trans('label.create_customer'))
                 ->createOptionForm(Customer::getForm())
                 ->createOptionUsing(function (array $data): void {
                     CustomerResource::createRecordForCurrentUser($data);
@@ -108,7 +108,7 @@ class Contract extends Model implements KeyValueOptionsContract
                 ->required(),
 
             Forms\Components\Select::make('supplier_id')
-                ->label(trans('base.supplier'))
+                ->label(trans('label.supplier'))
                 ->relationship(
                     name: 'supplier',
                     titleAttribute: 'name',
@@ -117,7 +117,7 @@ class Contract extends Model implements KeyValueOptionsContract
                             ->orderBy('name');
                     }
                 )
-                ->createOptionModalHeading(trans('base.create_supplier'))
+                ->createOptionModalHeading(trans('label.create_supplier'))
                 ->createOptionForm(Supplier::getForm())
                 ->createOptionUsing(function (array $data): void {
                     SupplierResource::createRecordForCurrentUser($data);
@@ -128,32 +128,32 @@ class Contract extends Model implements KeyValueOptionsContract
                 ->required(),
 
             Forms\Components\TextInput::make('name')
-                ->label(trans('base.contract_name'))
+                ->label(trans('label.contract_name'))
                 ->required()
                 ->maxLength(255),
 
             Forms\Components\DatePicker::make('signed_at')
-                ->label(trans('base.signed_at'))
+                ->label(trans('label.signed_at'))
                 ->required()
                 ->default(now()),
 
             Forms\Components\TextInput::make('price_per_hour')
-                ->label(trans('base.price_per_hour'))
+                ->label(trans('label.price_per_hour'))
                 ->required()
                 ->numeric(),
 
             Forms\Components\Select::make('currency')
-                ->label(trans('base.currency'))
+                ->label(trans('label.currency'))
                 ->required()
                 ->options(CurrencyEnum::class),
 
             Forms\Components\Toggle::make('reverse_charge')
-                ->label(trans('base.reverse_charge'))
+                ->label(trans('label.reverse_charge'))
                 ->required()
                 ->default(false),
 
             Forms\Components\Toggle::make('active')
-                ->label(trans('base.active'))
+                ->label(trans('label.active'))
                 ->required()
                 ->default(true),
         ];
