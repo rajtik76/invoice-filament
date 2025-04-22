@@ -50,7 +50,8 @@ class TaskResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->url(fn (Task $record) => $record->url)
-                    ->openUrlInNewTab(),
+                    ->openUrlInNewTab()
+                    ->extraAttributes(fn (Task $record) => $record->url ? ['class' => 'underline'] : []),
 
                 Tables\Columns\TextColumn::make('task_hours_sum_hours')
                     ->label(trans('label.hours'))

@@ -13,6 +13,7 @@ use App\Models\Invoice;
 use App\Services\GeneratorService;
 use App\Traits\HasGetQueryForCurrentUserTrait;
 use App\Traits\HasTranslatedBreadcrumbAndNavigationTrait;
+use Carbon\Carbon;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
@@ -162,7 +163,12 @@ class InvoiceResource extends Resource
                             Section::make([
                                 DatePicker::make('issue_date')
                                     ->label(trans('label.issue_date'))
-                                    ->default(now()),
+                                    ->default(now())
+                                    ->live()
+                                    ->afterStateUpdated(function (Set $set, string $state) {
+                                        $set('due_date', Carbon::make($state)->addDays(7)->format('Y-m-d'));
+                                    }),
+
                                 DatePicker::make('due_date')
                                     ->label(trans('label.due_date'))
                                     ->default(now()->addDays(7)),
