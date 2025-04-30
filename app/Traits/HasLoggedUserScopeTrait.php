@@ -7,6 +7,11 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * Trait HasLoggedUserScopeTrait
+ *
+ * @method static Builder loggedUser() Apply scope for filtering by the logged-in user
+ */
 trait HasLoggedUserScopeTrait
 {
     #[Scope]
