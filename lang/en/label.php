@@ -15,6 +15,7 @@ return [
     'report_pdf' => 'Report PDF',
     'create_contract' => 'Create Contract',
     'create_invoice' => 'Create Invoice',
+    'create_task' => 'Create Task',
     'task' => 'Task',
     'invoice' => 'Invoice',
     'report' => 'Report',

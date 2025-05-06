@@ -2,7 +2,7 @@
 
 arch('Debug tools')
     ->expect('App')
-    ->not->toUse(['die', 'dd', 'dump']);
+    ->not->toUse(['die', 'dd', 'dump', 'ray']);
 
 arch('Strict types')
     ->expect('App')
@@ -12,6 +12,19 @@ arch('Traits to be suffixed with "Trait"')
     ->expect('App\Traits')
     ->toBeTrait()
     ->toHaveSuffix('Trait');
+
+arch('Actions must be a final class + with "Action" suffix and must have handle method')
+    ->expect('App\Actions')
+    ->toBeClass()
+    ->toHaveSuffix('Action')
+    ->toHaveMethod('handle');
+
+arch('DTO\'s to be suffixed with "DTO" and must be final readonly class')
+    ->expect('App\DTO')
+    ->toBeClass()
+    ->toHaveSuffix('DTO')
+    ->toBeFinal()
+    ->toBeReadonly();
 
 arch('Traits are not defined else than in the "Traits" namespace')
     ->expect('App')

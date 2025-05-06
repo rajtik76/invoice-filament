@@ -12,4 +12,9 @@ return [
         'DE' => 'Germany',
         'CZ' => 'Czech Republic',
     ],
+
+    'language' => [
+        'en' => 'English',
+        'cs' => 'Czech',
+    ]
 ];

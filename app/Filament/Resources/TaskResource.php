@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Actions\CreateTaskAction;
+use App\DTO\TaskDTO;
 use App\Filament\Resources\TaskResource\Pages;
 use App\Models\Task;
 use App\Traits\HasGetQueryForCurrentUserTrait;
@@ -13,7 +15,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class TaskResource extends Resource
@@ -31,8 +32,7 @@ class TaskResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(Task::getForm());
+        return $form->schema(Task::getForm());
     }
 
     public static function table(Table $table): Table
@@ -49,15 +49,15 @@ class TaskResource extends Resource
                     ->label(trans('label.task'))
                     ->searchable()
                     ->sortable()
-                    ->url(fn (Task $record) => $record->url)
+                    ->url(fn(Task $record) => $record->url)
                     ->openUrlInNewTab()
-                    ->extraAttributes(fn (Task $record) => $record->url ? ['class' => 'underline'] : []),
+                    ->extraAttributes(fn(Task $record) => $record->url ? ['class' => 'underline'] : []),
 
                 Tables\Columns\TextColumn::make('task_hours_sum_hours')
                     ->label(trans('label.hours'))
-                    ->getStateUsing(fn ($record) => number_format(floatval($record->task_hours_sum_hours), 1))
+                    ->getStateUsing(fn($record) => number_format(floatval($record->task_hours_sum_hours), 1))
                     ->color('info')
-                    ->url(fn (Task $record) => TaskHourResource::getUrl(parameters: ['tableFilters[task][value]' => $record->id])),
+                    ->url(fn(Task $record) => TaskHourResource::getUrl(parameters: ['tableFilters[task][value]' => $record->id])),
 
                 Tables\Columns\ToggleColumn::make('active')
                     ->label(trans('label.active'))
@@ -66,7 +66,7 @@ class TaskResource extends Resource
             ->filters([
                 Tables\Filters\Filter::make('active')
                     ->label(trans('label.active'))
-                    ->query(fn (Builder $query) => $query->where('active', true))
+                    ->query(fn(Builder $query) => $query->where('active', true))
                     ->default(),
             ])
             ->actions([
@@ -112,6 +112,13 @@ class TaskResource extends Resource
      */
     public static function createRecordForCurrentUser(array $data): Task
     {
-        return Task::create(Arr::add($data, 'user_id', auth()->id()));
+        return new CreateTaskAction()->handle(new TaskDTO(
+            contract_id: $data['contract_id'],
+            user_id: auth()->id(),
+            name: $data['name'],
+            url: $data['url'],
+            note: $data['note'],
+            active: $data['active'],
+        ));
     }
 }

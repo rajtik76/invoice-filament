@@ -14,7 +14,7 @@ trait HasEnumTranslationsTrait
      */
     public static function translatedCases(): array
     {
-        // Return translated enum case
+        // Return translated an enum case
         return collect(self::cases())
             ->map(function ($case): string {
                 return __(static::getBaseNameTranslationKey() . $case->value);
@@ -43,10 +43,10 @@ trait HasEnumTranslationsTrait
      */
     protected static function getBaseNameTranslationKey(): string
     {
-        // Get the short class name without namespace
+        // Get the short class name without a namespace
         $className = class_basename(static::class);
 
-        // Remove 'Enum' suffix if present and convert to snake_case
+        // Remove the 'Enum' suffix if present and convert to snake_case
         $baseName = str($className)->replace('Enum', '')->snake()->toString();
 
         return "enum.{$baseName}.";
