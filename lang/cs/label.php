@@ -17,6 +17,7 @@ return [
     'create_invoice' => 'Vytvořit fakturu',
     'create_task' => 'Vytvořit úkol',
     'task' => 'Úkol',
+    'deactivate_task' => 'Deaktivuj task',
     'invoice' => 'Faktura',
     'report' => 'Zpráva',
     'contract_name' => 'Název smlouvy',

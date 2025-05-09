@@ -17,6 +17,7 @@ return [
     'create_invoice' => 'Create Invoice',
     'create_task' => 'Create Task',
     'task' => 'Task',
+    'deactivate_task' => 'Deactivate task',
     'invoice' => 'Invoice',
     'report' => 'Report',
     'contract_name' => 'Contract name',
