@@ -5,15 +5,77 @@ namespace Tests\Feature\Filament\Resources;
 
 use App\Enums\InvoiceStatusEnum;
 use App\Filament\Resources\InvoiceResource\Pages\ListInvoices;
+use App\Models\Contract;
 use App\Models\Invoice;
 use App\Models\User;
+use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
 use Illuminate\Database\Eloquent\Factories\Sequence;
+use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
     $this->actingAs($this->user);
+});
+
+it('can see invoices', function () {
+    $invoices = Invoice::factory()
+        ->count(5)
+        ->recycle($this->user)
+        ->create();
+
+    $otherUserInvoices = Invoice::factory()
+        ->count(5)
+        ->create();
+
+    livewire(ListInvoices::class)
+        ->assertCanSeeTableRecords($invoices) // can see current user records
+        ->assertCanNotSeeTableRecords($otherUserInvoices); // but can't see other user records
+});
+
+it('can create invoice', function () {
+    $contract = Contract::factory()
+        ->recycle($this->user)
+        ->create(['id' => 100]);
+
+    $invoiceData = [
+        'contract_id' => $contract->id,
+        'number' => 'INV-2023-001',
+        'prepare_hours' => false,
+    ];
+
+    livewire(ListInvoices::class)
+        ->callAction(CreateAction::class, $invoiceData)
+        ->assertHasNoActionErrors();
+
+    assertDatabaseHas('invoices', [
+        'user_id' => $this->user->id,
+        'contract_id' => $contract->id,
+        'number' => 'INV-2023-001',
+        'status' => InvoiceStatusEnum::Draft->value,
+    ]);
+});
+
+it('can edit invoice', function () {
+    $invoice = Invoice::factory()
+        ->recycle($this->user)
+        ->draft()
+        ->create(['number' => 'INV-2023-001']);
+
+    $invoiceNewData = [
+        'number' => 'INV-2023-002',
+    ];
+
+    livewire(ListInvoices::class)
+        ->callTableAction(name: EditAction::class, record: $invoice, data: $invoiceNewData)
+        ->assertHasNoTableActionErrors();
+
+    assertDatabaseHas('invoices', [
+        'id' => $invoice->id,
+        'number' => 'INV-2023-002',
+    ]);
 });
 
 it('can delete invoice', function () {
@@ -59,4 +121,3 @@ it('can filter invoices by `status`', function () {
         ->filterTable('status')
         ->assertCanSeeTableRecords($invoices);
 });
-
