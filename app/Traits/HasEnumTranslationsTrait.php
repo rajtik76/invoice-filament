@@ -17,7 +17,7 @@ trait HasEnumTranslationsTrait
         // Return translated an enum case
         return collect(self::cases())
             ->map(function ($case): string {
-                return __(static::getBaseNameTranslationKey() . $case->value);
+                return trans(static::getBaseNameTranslationKey() . $case->value);
             })
             ->all();
     }
@@ -27,7 +27,7 @@ trait HasEnumTranslationsTrait
      */
     public function translation(): string
     {
-        return __(static::getBaseNameTranslationKey() . $this->value);
+        return trans(static::getBaseNameTranslationKey() . $this->value);
     }
 
     /**
