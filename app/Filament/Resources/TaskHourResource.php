@@ -11,7 +11,7 @@ use App\Models\InvoiceHour;
 use App\Models\Task;
 use App\Models\TaskHour;
 use App\Traits\HasGetQueryForCurrentUserTrait;
-use App\Traits\HasTranslatedBreadcrumbAndNavigationTrait;
+use App\Traits\HasResourceTranslationsTrait;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
@@ -27,7 +27,7 @@ use Illuminate\Support\Arr;
 class TaskHourResource extends Resource
 {
     use HasGetQueryForCurrentUserTrait;
-    use HasTranslatedBreadcrumbAndNavigationTrait;
+    use HasResourceTranslationsTrait;
 
     protected static ?string $model = TaskHour::class;
 

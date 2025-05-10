@@ -7,7 +7,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ContractResource\Pages;
 use App\Models\Contract;
 use App\Traits\HasEntitiesNavigationGroupTrait;
-use App\Traits\HasTranslatedBreadcrumbAndNavigationTrait;
+use App\Traits\HasResourceTranslationsTrait;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -19,7 +19,7 @@ use Illuminate\Support\Number;
 class ContractResource extends Resource
 {
     use HasEntitiesNavigationGroupTrait;
-    use HasTranslatedBreadcrumbAndNavigationTrait;
+    use HasResourceTranslationsTrait;
 
     protected static ?string $model = Contract::class;
 

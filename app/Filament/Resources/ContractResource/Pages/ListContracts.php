@@ -6,12 +6,14 @@ namespace App\Filament\Resources\ContractResource\Pages;
 
 use App\Filament\Resources\ContractResource;
 use App\Models\Contract;
+use App\Traits\HasListPageTranslationsTrait;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use Illuminate\Contracts\Support\Htmlable;
 
 class ListContracts extends ListRecords
 {
+    use HasListPageTranslationsTrait;
+
     protected static string $resource = ContractResource::class;
 
     protected function getHeaderActions(): array
@@ -25,10 +27,5 @@ class ListContracts extends ListRecords
                     return ContractResource::createRecordForCurrentUser($data);
                 }),
         ];
-    }
-
-    public function getTitle(): string|Htmlable
-    {
-        return trans('navigation.contracts');
     }
 }

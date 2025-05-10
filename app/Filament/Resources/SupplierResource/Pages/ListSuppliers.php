@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Filament\Resources\SupplierResource\Pages;
 
 use App\Filament\Resources\SupplierResource;
+use App\Traits\HasListPageTranslationsTrait;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use Illuminate\Contracts\Support\Htmlable;
 
 class ListSuppliers extends ListRecords
 {
+    use HasListPageTranslationsTrait;
+
     protected static string $resource = SupplierResource::class;
 
     protected function getHeaderActions(): array
@@ -24,10 +26,5 @@ class ListSuppliers extends ListRecords
                     SupplierResource::createRecordForCurrentUser($data);
                 }),
         ];
-    }
-
-    public function getTitle(): string|Htmlable
-    {
-        return trans('navigation.suppliers');
     }
 }

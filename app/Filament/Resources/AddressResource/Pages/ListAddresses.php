@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Filament\Resources\AddressResource\Pages;
 
 use App\Filament\Resources\AddressResource;
+use App\Traits\HasListPageTranslationsTrait;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use Illuminate\Contracts\Support\Htmlable;
 
 class ListAddresses extends ListRecords
 {
+    use HasListPageTranslationsTrait;
+
     protected static string $resource = AddressResource::class;
 
     protected function getHeaderActions(): array
@@ -24,10 +26,5 @@ class ListAddresses extends ListRecords
                     self::$resource::createAddressForCurrentUser($data);
                 }),
         ];
-    }
-
-    public function getTitle(): string|Htmlable
-    {
-        return trans('navigation.addresses');
     }
 }

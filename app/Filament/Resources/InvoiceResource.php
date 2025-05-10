@@ -12,7 +12,7 @@ use App\Models\Contract;
 use App\Models\Invoice;
 use App\Services\GeneratorService;
 use App\Traits\HasGetQueryForCurrentUserTrait;
-use App\Traits\HasTranslatedBreadcrumbAndNavigationTrait;
+use App\Traits\HasResourceTranslationsTrait;
 use Carbon\Carbon;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
@@ -35,7 +35,7 @@ use Illuminate\Validation\Rules\Unique;
 class InvoiceResource extends Resource
 {
     use HasGetQueryForCurrentUserTrait;
-    use HasTranslatedBreadcrumbAndNavigationTrait;
+    use HasResourceTranslationsTrait;
 
     protected static ?string $model = Invoice::class;
 
@@ -62,12 +62,13 @@ class InvoiceResource extends Resource
                             ->createOptionUsing(function (array $data): void {
                                 ContractResource::createRecordForCurrentUser($data);
                             })
-                            ->createOptionAction(fn(Action $action) => $action->slideOver())
+                            ->createOptionAction(fn (Action $action) => $action->slideOver())
                             ->searchable()
                             ->preload()
                             ->live()
                             ->afterStateUpdated(function (Set $set, $state): void {
                                 // Get last invoice for contract
+                                /** @var Invoice|null $lastContractInvoices */
                                 $lastContractInvoices = Invoice::loggedUser()->where('contract_id', $state)->latest('issue_date')->first();
 
                                 if ($lastContractInvoices && GeneratorService::getNextInvoiceNumber($lastContractInvoices->number)) {
@@ -79,7 +80,7 @@ class InvoiceResource extends Resource
                                 }
                             })
                             ->required()
-                            ->visible(fn(?Invoice $record): bool => is_null($record)),
+                            ->visible(fn (?Invoice $record): bool => is_null($record)),
 
                         Split::make([
                             TextInput::make('number')
@@ -96,7 +97,7 @@ class InvoiceResource extends Resource
                         Split::make([
                             Checkbox::make('prepare_hours')
                                 ->label(trans('label.prepare_hours')),
-                        ])->visible(fn(?Invoice $record): bool => is_null($record)),
+                        ])->visible(fn (?Invoice $record): bool => is_null($record)),
                     ]),
             ]);
     }
@@ -104,7 +105,7 @@ class InvoiceResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn(/** @var Builder<Invoice> $query */ Builder $query) => $query->withSum('taskHours', 'hours'))
+            ->modifyQueryUsing(fn (/** @var Builder<Invoice> $query */ Builder $query) => $query->withSum('taskHours', 'hours'))
             ->defaultSort('issue_date', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('contract.name')
@@ -117,9 +118,9 @@ class InvoiceResource extends Resource
 
                 TextColumn::make('status')
                     ->label(trans('label.status'))
-                    ->formatStateUsing(fn(InvoiceStatusEnum $state) => $state->translation())
+                    ->formatStateUsing(fn (InvoiceStatusEnum $state) => $state->translation())
                     ->badge()
-                    ->color(fn(InvoiceStatusEnum $state) => match ($state) {
+                    ->color(fn (InvoiceStatusEnum $state) => match ($state) {
                         InvoiceStatusEnum::Draft => Color::Blue,
                         InvoiceStatusEnum::Issued => Color::Green,
                     }),
@@ -137,8 +138,8 @@ class InvoiceResource extends Resource
                 Tables\Columns\TextColumn::make('task_hours_sum_hours')
                     ->label(trans('label.hours'))
                     ->numeric(decimalPlaces: 1)
-                    ->getStateUsing(fn(Invoice $record) => $record->task_hours_sum_hours ?? 0)
-                    ->color(fn(Invoice $record): ?array => match ($record->status) {
+                    ->getStateUsing(fn (Invoice $record) => $record->task_hours_sum_hours ?? 0)
+                    ->color(fn (Invoice $record): ?array => match ($record->status) {
                         InvoiceStatusEnum::Draft => Color::Blue,
                         default => null,
                     }),
@@ -146,11 +147,11 @@ class InvoiceResource extends Resource
                 Tables\Columns\TextColumn::make('amount')
                     ->label(trans('label.amount'))
                     ->money(
-                        currency: fn(Invoice $invoice) => $invoice->contract->currency->value,
-                        locale: fn(Invoice $invoice) => $invoice->contract->currency === CurrencyEnum::EUR ? 'de' : 'cs'
+                        currency: fn (Invoice $invoice) => $invoice->contract->currency->value,
+                        locale: fn (Invoice $invoice) => $invoice->contract->currency === CurrencyEnum::EUR ? 'de' : 'cs'
                     )
-                    ->getStateUsing(fn(Invoice $record): float => $record->task_hours_sum_hours * $record->contract->price_per_hour)
-                    ->color(fn(Invoice $record): ?array => match ($record->status) {
+                    ->getStateUsing(fn (Invoice $record): float => $record->task_hours_sum_hours * $record->contract->price_per_hour)
+                    ->color(fn (Invoice $record): ?array => match ($record->status) {
                         InvoiceStatusEnum::Draft => Color::Blue,
                         default => null,
                     }),
@@ -165,7 +166,7 @@ class InvoiceResource extends Resource
                     // ISSUE
                     Tables\Actions\Action::make('issue')
                         ->label(trans('label.issue'))
-                        ->visible(fn(Invoice $record): bool => $record->status === InvoiceStatusEnum::Draft)
+                        ->visible(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Draft)
                         ->color(Color::Blue)
                         ->icon('heroicon-o-document-currency-dollar')
                         ->form([
@@ -195,29 +196,29 @@ class InvoiceResource extends Resource
                     Tables\Actions\Action::make('invoice_pdf')
                         ->label(trans('label.invoice'))
                         ->icon('heroicon-o-document')
-                        ->url(fn(Invoice $record): string => route('invoice.pdf', ['invoice' => $record->id]))
+                        ->url(fn (Invoice $record): string => route('invoice.pdf', ['invoice' => $record->id]))
                         ->openUrlInNewTab()
                         ->color(Color::Sky)
-                        ->hidden(fn(Invoice $record): bool => $record->status === InvoiceStatusEnum::Draft),
+                        ->hidden(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Draft),
 
                     // Report PDF
                     Tables\Actions\Action::make('report_pdf')
                         ->label(trans('label.report'))
                         ->icon('heroicon-o-document')
-                        ->url(fn(Invoice $record): string => route('invoice.report.pdf', ['invoice' => $record->id]))
+                        ->url(fn (Invoice $record): string => route('invoice.report.pdf', ['invoice' => $record->id]))
                         ->openUrlInNewTab()
                         ->color(Color::Sky)
-                        ->hidden(fn(Invoice $record): bool => $record->status === InvoiceStatusEnum::Draft),
+                        ->hidden(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Draft),
 
                     // VIEW
                     Tables\Actions\ViewAction::make('view')
                         ->label(trans('label.view'))
-                        ->visible(fn(Invoice $record): bool => $record->status === InvoiceStatusEnum::Issued),
+                        ->visible(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Issued),
 
                     // EDIT
                     Tables\Actions\EditAction::make('edit')
                         ->modalHeading(trans('label.edit_invoice'))
-                        ->hidden(fn(Invoice $record): bool => $record->status === InvoiceStatusEnum::Issued),
+                        ->hidden(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Issued),
 
                     // DELETE
                     Tables\Actions\DeleteAction::make(),

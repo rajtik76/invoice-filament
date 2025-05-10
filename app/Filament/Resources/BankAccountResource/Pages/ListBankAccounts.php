@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Filament\Resources\BankAccountResource\Pages;
 
 use App\Filament\Resources\BankAccountResource;
+use App\Traits\HasListPageTranslationsTrait;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use Illuminate\Contracts\Support\Htmlable;
 
 class ListBankAccounts extends ListRecords
 {
+    use HasListPageTranslationsTrait;
+
     protected static string $resource = BankAccountResource::class;
 
     protected function getHeaderActions(): array
@@ -24,10 +26,5 @@ class ListBankAccounts extends ListRecords
                     BankAccountResource::createRecordForCurrentUser($data);
                 }),
         ];
-    }
-
-    public function getTitle(): string|Htmlable
-    {
-        return trans('navigation.bank_accounts');
     }
 }

@@ -9,16 +9,18 @@ use App\Filament\Resources\InvoiceResource;
 use App\Models\Invoice;
 use App\Models\InvoiceHour;
 use App\Models\TaskHour;
+use App\Traits\HasListPageTranslationsTrait;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Exceptions\Halt;
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class ListInvoices extends ListRecords
 {
+    use HasListPageTranslationsTrait;
+
     protected static string $resource = InvoiceResource::class;
 
     protected function getHeaderActions(): array
@@ -71,10 +73,5 @@ class ListInvoices extends ListRecords
                     }
                 }),
         ];
-    }
-
-    public function getTitle(): string|Htmlable
-    {
-        return trans('navigation.invoices');
     }
 }
