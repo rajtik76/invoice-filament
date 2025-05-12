@@ -11,6 +11,7 @@ use App\Filament\Resources\InvoiceResource\Pages\ListInvoices;
 use App\Models\Contract;
 use App\Models\Invoice;
 use App\Models\User;
+use App\ValueObject\ContractSettingsValueObject;
 use App\ValueObject\InvoiceSettingsValueObject;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteAction;
@@ -140,4 +141,26 @@ it('can filter invoices by `status`', function () {
         ->assertCanSeeTableRecords($invoices)
         ->filterTable('status')
         ->assertCanSeeTableRecords($invoices);
+});
+
+it('create invoice with settings inherited from contract', function () {
+    // Contract with specific settings
+    $contract = Contract::factory()
+        ->recycle($this->user)
+        ->create([
+            'id' => 100,
+            'settings' => new ContractSettingsValueObject(reverseCharge: true, invoiceLocale: LocaleEnum::Czech),
+        ]);
+
+    livewire(ListInvoices::class)
+        ->callAction(CreateAction::class, ['contract_id' => $contract->id, 'number' => 'TEST-12345'])
+        ->assertHasNoActionErrors();
+
+    assertDatabaseHas('invoices', [
+        'user_id' => $this->user->id,
+        'contract_id' => $contract->id,
+        'number' => 'TEST-12345',
+        'settings->invoiceLocale' => LocaleEnum::Czech, // settings from contract
+        'settings->reverseCharge' => true, // settings from contract
+    ]);
 });
