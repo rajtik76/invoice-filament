@@ -81,7 +81,7 @@ class InvoicePdfController extends Controller
                 'subtotal' => $invoiceTotalAmount,
                 'totalAmount' => $invoiceTotalAmount,
                 'items' => $invoiceTaskHours,
-                'isReverseCharge' => false, // TODO needs to be fixed when I add settings to invoice
+                'isReverseCharge' => $invoice->settings->reverseCharge,
                 'currency' => $invoice->contract->currency->getCurrencySymbol(),
             ],
 
@@ -95,7 +95,17 @@ class InvoicePdfController extends Controller
             ],
         ];
 
+        // Get current locale
+        $locale = app()->getLocale();
+
+        // Set locale from invoice settings
+        app()->setLocale($invoice->settings->invoiceLocale->value);
+
+        // Generate invoice PDF
         $pdf = PDF::loadView('invoice-pdf', $data);
+
+        // Restore locale
+        app()->setLocale($locale);
 
         $fileName = GeneratorService::generateFileName(['invoice', $invoice->number]);
 

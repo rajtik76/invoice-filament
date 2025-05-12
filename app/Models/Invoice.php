@@ -31,6 +31,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * =========
  * @property-read Contract $contract
  * @property-read float|null $task_hours_sum_hours
+ * @property-read User $user
  *
  * Traits
  * ======
