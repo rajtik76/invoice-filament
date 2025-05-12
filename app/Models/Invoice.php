@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\AsInvoiceSettingsCast;
 use App\Enums\CurrencyEnum;
 use App\Enums\InvoiceStatusEnum;
 use App\Traits\HasLoggedUserScopeTrait;
+use App\ValueObject\InvoiceSettingsValueObject;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property-read CarbonImmutable $due_date
  * @property-read CurrencyEnum $currency
  * @property-read InvoiceStatusEnum $status
+ * @property InvoiceSettingsValueObject $settings
  *
  * Relations
  * =========
@@ -46,6 +49,7 @@ class Invoice extends Model
         'due_date' => 'immutable_date',
         'currency' => CurrencyEnum::class,
         'status' => InvoiceStatusEnum::class,
+        'settings' => AsInvoiceSettingsCast::class,
     ];
 
     public function contract(): BelongsTo

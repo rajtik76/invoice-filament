@@ -6,16 +6,17 @@ namespace App\Filament\Resources;
 
 use App\Enums\CurrencyEnum;
 use App\Enums\InvoiceStatusEnum;
+use App\Enums\LocaleEnum;
 use App\Filament\Forms\ContractForm;
 use App\Filament\Resources\InvoiceResource\Pages;
 use App\Filament\Resources\InvoiceResource\RelationManagers\InvoiceHoursRelationManager;
 use App\Models\Contract;
 use App\Models\Invoice;
-use App\Models\User;
 use App\Services\GeneratorService;
 use App\Traits\HasGetQueryForCurrentUserTrait;
 use App\Traits\HasResourceTranslationsTrait;
 use Carbon\Carbon;
+use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
@@ -69,8 +70,17 @@ class InvoiceResource extends Resource
                             ->preload()
                             ->live()
                             ->afterStateUpdated(function (Set $set, $state): void {
+                                // Get contract
+                                /** @var Contract $contract */
+                                $contract = Contract::findOrFail($state);
+
+                                // Update invoice locale
+                                $set('settings.invoice_locale', $contract->settings->invoiceLocale->value);
+
+                                // Update invoice reverse charge
+                                $set('settings.reverse_charge', $contract->settings->reverseCharge);
+
                                 // Generate invoice number
-                                $a = User::first()->settings;
                                 if (auth()->user()->settings->generatedInvoiceNumber) {
                                     // Get last invoice for contract
                                     /** @var Invoice|null $lastContractInvoices */
@@ -93,7 +103,7 @@ class InvoiceResource extends Resource
                                 ->label(trans('label.invoice_number'))
                                 ->required()
                                 ->maxLength(255)
-                                ->unique(modifyRuleUsing: function (Unique $rule, Get $get) {
+                                ->unique(ignoreRecord: true, modifyRuleUsing: function (Unique $rule, Get $get) {
                                     $rule->where('user_id', auth()->id())
                                         ->where('contract_id', $get('contract_id'))
                                         ->where('number', $get('number'));
@@ -104,6 +114,21 @@ class InvoiceResource extends Resource
                             Checkbox::make('prepare_hours')
                                 ->label(trans('label.prepare_hours')),
                         ])->visible(fn (?Invoice $record): bool => is_null($record)),
+                    ]),
+
+                Forms\Components\Fieldset::make('settings')
+                    ->columns(1)
+                    ->label(trans('label.settings'))
+                    ->schema([
+                        Forms\Components\Select::make('settings.invoice_locale')
+                            ->label(trans('label.invoice_locale'))
+                            ->options(LocaleEnum::translatedCases())
+                            ->selectablePlaceholder(false)
+                            ->formatStateUsing(fn (?Invoice $record): string => $record?->settings->invoiceLocale->value ?? LocaleEnum::English->value),
+
+                        Forms\Components\Toggle::make('settings.reverse_charge')
+                            ->label(trans('label.invoice_reverse_charge'))
+                            ->formatStateUsing(fn (?Invoice $record): bool => $record?->settings->reverseCharge ?? false),
                     ]),
             ]);
     }

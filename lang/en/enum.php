@@ -13,8 +13,8 @@ return [
         'CZ' => 'Czech Republic',
     ],
 
-    'language' => [
+    'locale' => [
         'en' => 'English',
         'cs' => 'Czech',
-    ]
+    ],
 ];

@@ -76,7 +76,7 @@ class ContractResource extends Resource
                     ->slideOver()
                     ->mutateRecordDataUsing(function (Contract $record, array $data) {
                         $data['settings'] = [];
-                        $data['settings']['locale'] = $record->settings->invoiceLocale->value;
+                        $data['settings']['invoice_locale'] = $record->settings->invoiceLocale->value;
                         $data['settings']['reverse_charge'] = $record->settings->reverseCharge;
 
                         return $data;
