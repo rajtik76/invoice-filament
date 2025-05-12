@@ -110,6 +110,5 @@ class InvoicePdfController extends Controller
         $fileName = GeneratorService::generateFileName(['invoice', $invoice->number]);
 
         return $pdf->stream($fileName);
-
     }
 }
