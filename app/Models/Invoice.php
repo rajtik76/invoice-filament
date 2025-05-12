@@ -8,6 +8,7 @@ use App\Enums\CurrencyEnum;
 use App\Enums\InvoiceStatusEnum;
 use App\Traits\HasLoggedUserScopeTrait;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,6 +28,11 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * =========
  * @property-read Contract $contract
  * @property-read float|null $task_hours_sum_hours
+ *
+ * Traits
+ * ======
+ *
+ * @method static Builder loggedUser()
  */
 class Invoice extends Model
 {

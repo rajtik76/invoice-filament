@@ -63,6 +63,8 @@ return [
     'quantity' => 'Quantity',
     'unit_price' => 'Unit price',
     'total' => 'Total',
+    'language' => 'Language',
+    'generated_invoice_number' => 'Generated invoice number',
 
     'filters' => [
         'task_hours' => [

@@ -10,6 +10,7 @@ use App\Filament\Resources\InvoiceResource\Pages;
 use App\Filament\Resources\InvoiceResource\RelationManagers\InvoiceHoursRelationManager;
 use App\Models\Contract;
 use App\Models\Invoice;
+use App\Models\User;
 use App\Services\GeneratorService;
 use App\Traits\HasGetQueryForCurrentUserTrait;
 use App\Traits\HasResourceTranslationsTrait;
@@ -67,16 +68,20 @@ class InvoiceResource extends Resource
                             ->preload()
                             ->live()
                             ->afterStateUpdated(function (Set $set, $state): void {
-                                // Get last invoice for contract
-                                /** @var Invoice|null $lastContractInvoices */
-                                $lastContractInvoices = Invoice::loggedUser()->where('contract_id', $state)->latest('issue_date')->first();
+                                // Generate invoice number
+                                $a = User::first()->settings;
+                                if (auth()->user()->settings->generatedInvoiceNumber) {
+                                    // Get last invoice for contract
+                                    /** @var Invoice|null $lastContractInvoices */
+                                    $lastContractInvoices = Invoice::loggedUser()->where('contract_id', $state)->latest('issue_date')->first();
 
-                                if ($lastContractInvoices && GeneratorService::getNextInvoiceNumber($lastContractInvoices->number)) {
-                                    // If the last invoice exists, get the next invoice number from it
-                                    $set('number', GeneratorService::getNextInvoiceNumber($lastContractInvoices->number));
-                                } else {
-                                    // Else get initials of the contract name and current year and month
-                                    $set('number', GeneratorService::getInitials(Contract::find($state)->name) . '-' . now()->year . '-' . sprintf('%03d', now()->month));
+                                    if ($lastContractInvoices && GeneratorService::getNextInvoiceNumber($lastContractInvoices->number)) {
+                                        // If the last invoice exists, get the next invoice number from it
+                                        $set('number', GeneratorService::getNextInvoiceNumber($lastContractInvoices->number));
+                                    } else {
+                                        // Else get initials of the contract name and current year and month
+                                        $set('number', GeneratorService::getInitials(Contract::find($state)->name) . '-' . now()->year . '-' . sprintf('%03d', now()->month));
+                                    }
                                 }
                             })
                             ->required()
