@@ -1,10 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Enums\LanguageEnum;
-use Illuminate\Http\RedirectResponse;
+use App\Enums\LocaleEnum;
 
 final class LanguageSwitchService
 {
@@ -15,16 +15,16 @@ final class LanguageSwitchService
         $locale = session(self::LOCALE_KEY) ??
             request()->cookie(self::LOCALE_KEY) ??
             request()->get('locale') ??
-            LanguageEnum::English->value;
+            LocaleEnum::English->value;
 
-        if ($locale instanceof LanguageEnum) {
+        if ($locale instanceof LocaleEnum) {
             $locale = $locale->value;
         }
 
         return $locale;
     }
 
-    public function setLocale(LanguageEnum $language): void
+    public function setLocale(LocaleEnum $language): void
     {
         session()->put(self::LOCALE_KEY, $language->value);
 

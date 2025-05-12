@@ -25,7 +25,6 @@ class ContractFactory extends Factory
             'name' => fn (array $attributes) => Customer::find($attributes['customer_id'])->name . ' contract',
             'signed_at' => $this->faker->unique()->dateTimeBetween(),
             'currency' => $this->faker->randomElement(CurrencyEnum::cases()),
-            'reverse_charge' => $this->faker->boolean(),
             'price_per_hour' => fn (array $attributes) => $attributes['currency'] === CurrencyEnum::CZK
                 ? $this->faker->randomFloat(2, 300, 1000)
                 : $this->faker->randomFloat(2, 10, 50),

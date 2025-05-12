@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Feature\Filament\Resources;
 
 use App\Enums\CurrencyEnum;
+use App\Enums\LocaleEnum;
 use App\Filament\Resources\ContractResource\Pages\ListContracts;
 use App\Models\Contract;
 use App\Models\Customer;
@@ -12,6 +14,7 @@ use App\Models\User;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
+
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Livewire\livewire;
@@ -64,6 +67,10 @@ it('can create contract', function () {
         'currency' => CurrencyEnum::EUR,
         'reverse_charge' => false,
         'active' => true,
+        'settings' => [
+            'invoice_locale' => LocaleEnum::Czech->value,
+            'reverse_charge' => true,
+        ],
     ];
 
     // Test creating a new contract
@@ -80,7 +87,8 @@ it('can create contract', function () {
         'signed_at' => now()->startOfDay()->format('Y-m-d H:i:s'),
         'price_per_hour' => 100,
         'currency' => CurrencyEnum::EUR,
-        'reverse_charge' => false,
+        'settings->invoiceLocale' => LocaleEnum::Czech,
+        'settings->reverseCharge' => true,
         'active' => true,
     ]);
 });
@@ -108,6 +116,10 @@ it('can edit contract', function () {
         'currency' => CurrencyEnum::EUR,
         'reverse_charge' => true,
         'active' => true,
+        'settings' => [
+            'invoice_locale' => LocaleEnum::Czech->value,
+            'reverse_charge' => true,
+        ],
     ];
 
     // Test editing the contract
@@ -125,8 +137,9 @@ it('can edit contract', function () {
         'signed_at' => now()->startOfDay()->format('Y-m-d H:i:s'),
         'price_per_hour' => 150,
         'currency' => CurrencyEnum::EUR,
-        'reverse_charge' => true,
         'active' => true,
+        'settings->invoiceLocale' => LocaleEnum::Czech,
+        'settings->reverseCharge' => true,
     ]);
 });
 

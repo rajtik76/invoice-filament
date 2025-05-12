@@ -6,7 +6,7 @@
     </x-slot>
 
     <x-filament::dropdown.list>
-        @foreach(\App\Enums\LanguageEnum::cases() as $language)
+        @foreach(\App\Enums\LocaleEnum::cases() as $language)
             <x-filament::dropdown.list.item wire:click="changeLanguage('{{ $language }}')">
                 {{ $language->translation() }}
             </x-filament::dropdown.list.item>

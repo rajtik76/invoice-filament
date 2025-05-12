@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\AsContractSettingsCast;
 use App\Contracts\KeyValueOptionsContract;
 use App\Enums\CurrencyEnum;
-use App\Filament\Resources\CustomerResource;
-use App\Filament\Resources\SupplierResource;
 use App\Traits\HasCurrentUserScopeTrait;
-use Filament\Forms;
-use Filament\Forms\Components\Actions\Action;
+use App\ValueObject\ContractSettingsValueObject;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,6 +20,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read User $user
  * @property-read Customer $customer
  * @property-read Supplier $supplier
+ *
+ * Casts
+ * =====
+ * @property ContractSettingsValueObject $settings
  */
 class Contract extends Model implements KeyValueOptionsContract
 {
@@ -32,6 +34,7 @@ class Contract extends Model implements KeyValueOptionsContract
     protected $casts = [
         'signed_at' => 'date',
         'currency' => CurrencyEnum::class,
+        'settings' => AsContractSettingsCast::class,
     ];
 
     /**
@@ -77,85 +80,5 @@ class Contract extends Model implements KeyValueOptionsContract
     protected function active(Builder $query): void
     {
         $query->where('active', true);
-    }
-
-    /**
-     * Get form
-     *
-     * @return array<int, mixed>
-     */
-    public static function getForm(): array
-    {
-        return [
-            Forms\Components\Select::make('customer_id')
-                ->label(trans('label.customer'))
-                ->relationship(
-                    name: 'customer',
-                    titleAttribute: 'name',
-                    modifyQueryUsing: function (Builder $query): void {
-                        $query->where('user_id', auth()->id())
-                            ->orderBy('name');
-                    }
-                )
-                ->createOptionModalHeading(trans('label.create_customer'))
-                ->createOptionForm(Customer::getForm())
-                ->createOptionUsing(function (array $data): void {
-                    CustomerResource::createRecordForCurrentUser($data);
-                })
-                ->createOptionAction(fn (Action $action) => $action->slideOver())
-                ->searchable()
-                ->preload()
-                ->required(),
-
-            Forms\Components\Select::make('supplier_id')
-                ->label(trans('label.supplier'))
-                ->relationship(
-                    name: 'supplier',
-                    titleAttribute: 'name',
-                    modifyQueryUsing: function (Builder $query): void {
-                        $query->where('user_id', auth()->id())
-                            ->orderBy('name');
-                    }
-                )
-                ->createOptionModalHeading(trans('label.create_supplier'))
-                ->createOptionForm(Supplier::getForm())
-                ->createOptionUsing(function (array $data): void {
-                    SupplierResource::createRecordForCurrentUser($data);
-                })
-                ->createOptionAction(fn (Action $action) => $action->slideOver())
-                ->searchable()
-                ->preload()
-                ->required(),
-
-            Forms\Components\TextInput::make('name')
-                ->label(trans('label.contract_name'))
-                ->required()
-                ->maxLength(255),
-
-            Forms\Components\DatePicker::make('signed_at')
-                ->label(trans('label.signed_at'))
-                ->required()
-                ->default(now()),
-
-            Forms\Components\TextInput::make('price_per_hour')
-                ->label(trans('label.price_per_hour'))
-                ->required()
-                ->numeric(),
-
-            Forms\Components\Select::make('currency')
-                ->label(trans('label.currency'))
-                ->required()
-                ->options(CurrencyEnum::class),
-
-            Forms\Components\Toggle::make('reverse_charge')
-                ->label(trans('label.reverse_charge'))
-                ->required()
-                ->default(false),
-
-            Forms\Components\Toggle::make('active')
-                ->label(trans('label.active'))
-                ->required()
-                ->default(true),
-        ];
     }
 }

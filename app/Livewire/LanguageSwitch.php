@@ -1,15 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Livewire;
 
-use App\Enums\LanguageEnum;
+use App\Enums\LocaleEnum;
 use App\Services\LanguageSwitchService;
 use Livewire\Component;
 
 class LanguageSwitch extends Component
 {
-    public function changeLanguage(LanguageEnum $language, LanguageSwitchService $languageSwitchService)
+    public function changeLanguage(LocaleEnum $language, LanguageSwitchService $languageSwitchService)
     {
         $languageSwitchService->setLocale($language);
 

@@ -65,6 +65,10 @@ return [
     'total' => 'Total',
     'language' => 'Language',
     'generated_invoice_number' => 'Generated invoice number',
+    'edit_contract' => 'Edit contract',
+    'settings' => 'Settings',
+    'invoice_reverse_charge' => 'Display reverse charge on the invoice',
+    'invoice_locale' => 'Invoice default language',
 
     'filters' => [
         'task_hours' => [

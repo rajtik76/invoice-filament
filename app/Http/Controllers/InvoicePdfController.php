@@ -81,7 +81,7 @@ class InvoicePdfController extends Controller
                 'subtotal' => $invoiceTotalAmount,
                 'totalAmount' => $invoiceTotalAmount,
                 'items' => $invoiceTaskHours,
-                'isReverseCharge' => $invoice->contract->reverse_charge,
+                'isReverseCharge' => false, // TODO needs to be fixed when I add settings to invoice
                 'currency' => $invoice->contract->currency->getCurrencySymbol(),
             ],
 

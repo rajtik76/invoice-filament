@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\KeyValueOptionsContract;
+use App\Filament\Forms\ContractForm;
 use App\Filament\Resources\ContractResource;
 use App\Traits\HasActiveScopeTrait;
 use App\Traits\HasCurrentUserScopeTrait;
@@ -74,7 +75,7 @@ class Task extends Model implements KeyValueOptionsContract
                             }
                         )
                         ->createOptionModalHeading(trans('label.create_contract'))
-                        ->createOptionForm(Contract::getForm())
+                        ->createOptionForm(ContractForm::form())
                         ->createOptionUsing(function (array $data): void {
                             ContractResource::createRecordForCurrentUser($data);
                         })

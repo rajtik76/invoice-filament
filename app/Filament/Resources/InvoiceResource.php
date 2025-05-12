@@ -6,6 +6,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\CurrencyEnum;
 use App\Enums\InvoiceStatusEnum;
+use App\Filament\Forms\ContractForm;
 use App\Filament\Resources\InvoiceResource\Pages;
 use App\Filament\Resources\InvoiceResource\RelationManagers\InvoiceHoursRelationManager;
 use App\Models\Contract;
@@ -59,7 +60,7 @@ class InvoiceResource extends Resource
                                 }
                             )
                             ->createOptionModalHeading(trans('label.create_contract'))
-                            ->createOptionForm(Contract::getForm())
+                            ->createOptionForm(ContractForm::form())
                             ->createOptionUsing(function (array $data): void {
                                 ContractResource::createRecordForCurrentUser($data);
                             })
