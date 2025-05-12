@@ -69,6 +69,15 @@ return [
     'settings' => 'Settings',
     'invoice_reverse_charge' => 'Display reverse charge on the invoice',
     'invoice_locale' => 'Invoice default language',
+    'create_address' => 'Create address',
+    'edit_address' => 'Edit address',
+    'create_bank_account' => 'Create bank account',
+    'edit_bank_account' => 'Edit bank account',
+    'create_supplier' => 'Create supplier',
+    'edit_supplier' => 'Edit supplier',
+    'edit_task_hour' => 'Edit task hour',
+    'create_customer' => 'Create customer',
+    'edit_customer' => 'Edit customer',
 
     'filters' => [
         'task_hours' => [
