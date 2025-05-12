@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Filament\Forms\SupplierForm;
 use App\Filament\Resources\SupplierResource\Pages;
 use App\Models\Supplier;
 use App\Traits\HasEntitiesNavigationGroupTrait;
@@ -29,7 +30,7 @@ class SupplierResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(Supplier::getForm());
+            ->schema(SupplierForm::form());
     }
 
     public static function table(Table $table): Table

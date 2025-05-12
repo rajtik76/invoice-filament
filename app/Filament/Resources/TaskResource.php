@@ -6,6 +6,7 @@ namespace App\Filament\Resources;
 
 use App\Actions\CreateTaskAction;
 use App\DTO\TaskDTO;
+use App\Filament\Forms\TaskForm;
 use App\Filament\Resources\TaskResource\Pages;
 use App\Models\Task;
 use App\Traits\HasGetQueryForCurrentUserTrait;
@@ -32,7 +33,7 @@ class TaskResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form->schema(Task::getForm());
+        return $form->schema(TaskForm::form());
     }
 
     public static function table(Table $table): Table

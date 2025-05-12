@@ -9,15 +9,13 @@ use App\Enums\LocaleEnum;
 use App\Filament\Resources\CustomerResource;
 use App\Filament\Resources\SupplierResource;
 use App\Models\Contract;
-use App\Models\Customer;
-use App\Models\Supplier;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
 
 class ContractForm
 {
-    public static function form()
+    public static function form(): array
     {
         return [
             Forms\Components\Fieldset::make('details')
@@ -34,7 +32,7 @@ class ContractForm
                             }
                         )
                         ->createOptionModalHeading(trans('label.create_customer'))
-                        ->createOptionForm(Customer::getForm())
+                        ->createOptionForm(CustomerForm::form())
                         ->createOptionUsing(function (array $data): void {
                             CustomerResource::createRecordForCurrentUser($data);
                         })
@@ -54,7 +52,7 @@ class ContractForm
                             }
                         )
                         ->createOptionModalHeading(trans('label.create_supplier'))
-                        ->createOptionForm(Supplier::getForm())
+                        ->createOptionForm(SupplierForm::form())
                         ->createOptionUsing(function (array $data): void {
                             SupplierResource::createRecordForCurrentUser($data);
                         })
