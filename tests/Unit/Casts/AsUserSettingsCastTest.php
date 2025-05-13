@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 it('return correct default values', function () {
     expect(AsUserSettingsCast::getDefaults())
         ->toEqual(new UserSettingsValueObject(
-            dueDateOffset: 14,
+            generatedInvoiceNumber: true,
         ));
 });
 
@@ -19,8 +19,8 @@ it('return default value when setting key not found', function () {
         ->once();
 
     expect(
-        new AsUserSettingsCast()->get(
-            model: new User(),
+        (new AsUserSettingsCast)->get(
+            model: new User,
             key: 'settings',
             value: '{"foo": "bar"}',
             attributes: []
@@ -31,12 +31,12 @@ it('return default value when setting key not found', function () {
 
 it('return correct value', function () {
     expect(
-        new AsUserSettingsCast()->get(
-            model: new User(),
+        (new AsUserSettingsCast)->get(
+            model: new User,
             key: 'settings',
-            value: '{"dueDateOffset": 9}',
+            value: '{"generatedInvoiceNumber": false}',
             attributes: []
         )
     )
-        ->toEqual(new UserSettingsValueObject(dueDateOffset: 9));
+        ->toEqual(new UserSettingsValueObject(generatedInvoiceNumber: false));
 });

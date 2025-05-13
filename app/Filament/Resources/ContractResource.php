@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Enums\LocaleEnum;
+use App\Filament\Forms\ContractForm;
 use App\Filament\Resources\ContractResource\Pages;
 use App\Models\Contract;
 use App\Traits\HasEntitiesNavigationGroupTrait;
 use App\Traits\HasResourceTranslationsTrait;
+use App\ValueObject\ContractSettingsValueObject;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Number;
 
 class ContractResource extends Resource
@@ -30,7 +32,7 @@ class ContractResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(Contract::getForm());
+            ->schema(ContractForm::form());
     }
 
     public static function table(Table $table): Table
@@ -71,7 +73,31 @@ class ContractResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->modalHeading(trans('label.edit_contract'))
-                    ->slideOver(),
+                    ->slideOver()
+                    ->mutateRecordDataUsing(function (Contract $record, array $data) {
+                        $data['settings'] = [];
+                        $data['settings']['invoice_locale'] = $record->settings->invoiceLocale->value;
+                        $data['settings']['reverse_charge'] = $record->settings->reverseCharge;
+
+                        return $data;
+                    })
+                    ->using(function (Contract $record, array $data) {
+                        // Get settings
+                        $settings = $record->settings;
+
+                        // Update settings
+                        $settings->invoiceLocale = LocaleEnum::from($data['settings']['invoice_locale']);
+                        $settings->reverseCharge = $data['settings']['reverse_charge'];
+                        $record->settings = $settings;
+
+                        // Remove settings from data
+                        unset($data['settings']);
+
+                        // Update model
+                        $record->update($data);
+
+                        return $record;
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -105,6 +131,18 @@ class ContractResource extends Resource
      */
     public static function createRecordForCurrentUser(array $data): Contract
     {
-        return Contract::create(Arr::add($data, 'user_id', auth()->id()));
+        // Create contract settings
+        $settings = new ContractSettingsValueObject(
+            reverseCharge: $data['settings']['reverse_charge'],
+            invoiceLocale: LocaleEnum::from($data['settings']['invoice_locale'])
+        );
+
+        // Set settings in data array
+        $data['settings'] = $settings;
+
+        return Contract::create([
+            ...$data,
+            'user_id' => auth()->id(),
+        ]);
     }
 }

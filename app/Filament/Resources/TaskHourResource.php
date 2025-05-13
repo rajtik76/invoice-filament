@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Enums\InvoiceStatusEnum;
+use App\Filament\Forms\TaskForm;
 use App\Filament\Resources\TaskHourResource\Pages;
 use App\Models\Invoice;
 use App\Models\InvoiceHour;
@@ -65,7 +66,7 @@ class TaskHourResource extends Resource
                                 return null;
                             })
                             ->createOptionModalHeading(trans('label.create_task'))
-                            ->createOptionForm(Task::getForm())
+                            ->createOptionForm(TaskForm::form())
                             ->createOptionUsing(function (array $data): void {
                                 TaskResource::createRecordForCurrentUser($data);
                             })

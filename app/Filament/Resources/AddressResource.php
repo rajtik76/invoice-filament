@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Enums\CountryEnum;
+use App\Filament\Forms\AddressForm;
 use App\Filament\Resources\AddressResource\Pages;
 use App\Models\Address;
 use App\Traits\HasEntitiesNavigationGroupTrait;
@@ -29,7 +30,7 @@ class AddressResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form->schema(Address::getForm());
+        return $form->schema(AddressForm::form());
     }
 
     public static function table(Table $table): Table

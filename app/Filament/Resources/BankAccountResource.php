@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Filament\Forms\BankAccountForm;
 use App\Filament\Resources\BankAccountResource\Pages;
 use App\Models\BankAccount;
 use App\Traits\HasEntitiesNavigationGroupTrait;
@@ -29,7 +30,7 @@ class BankAccountResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(BankAccount::getForm());
+            ->schema(BankAccountForm::form());
     }
 
     public static function table(Table $table): Table

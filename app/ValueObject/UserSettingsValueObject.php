@@ -1,31 +1,26 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\ValueObject;
 
-use JetBrains\PhpStorm\ArrayShape;
 use JsonSerializable;
 
 final class UserSettingsValueObject implements JsonSerializable
 {
-    /**
-     * @param int $dueDateOffset The number of days added to the invoice issue date to calculate the due date.
-     */
     public function __construct(
-        public int $dueDateOffset
-    )
-    {
-    }
+        public bool $generatedInvoiceNumber,
+    ) {}
 
     /**
      * @return array{
-     *     dueDateOffset: int
+     *     generatedInvoiceNumber: bool
      * }
      */
     public function jsonSerialize(): array
     {
         return [
-            'dueDateOffset' => $this->dueDateOffset,
+            'generatedInvoiceNumber' => $this->generatedInvoiceNumber,
         ];
     }
 }

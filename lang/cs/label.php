@@ -63,6 +63,21 @@ return [
     'quantity' => 'Množství',
     'unit_price' => 'Cena za jednotku',
     'total' => 'Celkem',
+    'language' => 'Jazyk',
+    'generated_invoice_number' => 'Generované číslo faktury',
+    'edit_contract' => 'Upravit smlouvu',
+    'settings' => 'Nastavení',
+    'invoice_reverse_charge' => 'Zobrazit reverse charge na faktuře',
+    'invoice_locale' => 'Výchozí jazyk faktury',
+    'create_address' => 'Vytvořit adresu',
+    'edit_address' => 'Upravit adresu',
+    'create_bank_account' => 'Vytvořit bankovní účet',
+    'edit_bank_account' => 'Upravit bankovní účet',
+    'create_supplier' => 'Vytvořit dodavatele',
+    'edit_supplier' => 'Upravit dodavatele',
+    'edit_task_hour' => 'Upravit hodinu úkolu',
+    'create_customer' => 'Vytvořit zákazníka',
+    'edit_customer' => 'Upravit zákazníka',
 
     'filters' => [
         'task_hours' => [

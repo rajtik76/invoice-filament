@@ -13,7 +13,7 @@ return [
         'CZ' => 'Česká Republika',
     ],
 
-    'language' => [
+    'locale' => [
         'en' => 'Angličtina',
         'cs' => 'Čeština',
     ]

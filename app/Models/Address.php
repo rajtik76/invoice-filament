@@ -6,12 +6,11 @@ namespace App\Models;
 
 use App\Contracts\KeyValueOptionsContract;
 use App\Enums\CountryEnum;
+use App\Filament\Forms\AddressForm;
 use App\Filament\Resources\AddressResource;
 use App\Traits\HasCurrentUserScopeTrait;
 use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -50,38 +49,8 @@ class Address extends Model implements KeyValueOptionsContract
             ->all();
     }
 
-    public static function getForm(): array
-    {
-        return [
-            Grid::make()
-                ->columns(1)
-                ->schema([
-                    TextInput::make('street')
-                        ->label(trans('label.street'))
-                        ->required()
-                        ->maxLength(255),
-                ]),
-            Grid::make()
-                ->columns(3)
-                ->schema([
-                    TextInput::make('city')
-                        ->label(trans('label.city'))
-                        ->required()
-                        ->maxLength(255),
-                    TextInput::make('zip')
-                        ->label(trans('label.zip'))
-                        ->required()
-                        ->maxLength(255),
-                    Select::make('country')
-                        ->label(trans('label.country'))
-                        ->required()
-                        ->options(CountryEnum::options()),
-                ]),
-        ];
-    }
-
     /**
-     * Get address select with new option
+     * Get address select with a new option
      */
     public static function getSelectWithNewOption(): Select
     {
@@ -98,7 +67,7 @@ class Address extends Model implements KeyValueOptionsContract
             )
             ->getOptionLabelFromRecordUsing(fn (Address $record): string => "{$record->street}, {$record->zip} {$record->city}, {$record->country->countryName()}")
             ->createOptionModalHeading(trans('label.create_address'))
-            ->createOptionForm(Address::getForm())
+            ->createOptionForm(AddressForm::form())
             ->createOptionUsing(function (array $data): void {
                 AddressResource::createAddressForCurrentUser($data);
             })

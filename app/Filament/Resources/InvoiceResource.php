@@ -6,6 +6,8 @@ namespace App\Filament\Resources;
 
 use App\Enums\CurrencyEnum;
 use App\Enums\InvoiceStatusEnum;
+use App\Enums\LocaleEnum;
+use App\Filament\Forms\ContractForm;
 use App\Filament\Resources\InvoiceResource\Pages;
 use App\Filament\Resources\InvoiceResource\RelationManagers\InvoiceHoursRelationManager;
 use App\Models\Contract;
@@ -14,6 +16,7 @@ use App\Services\GeneratorService;
 use App\Traits\HasGetQueryForCurrentUserTrait;
 use App\Traits\HasResourceTranslationsTrait;
 use Carbon\Carbon;
+use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
@@ -58,7 +61,7 @@ class InvoiceResource extends Resource
                                 }
                             )
                             ->createOptionModalHeading(trans('label.create_contract'))
-                            ->createOptionForm(Contract::getForm())
+                            ->createOptionForm(ContractForm::form())
                             ->createOptionUsing(function (array $data): void {
                                 ContractResource::createRecordForCurrentUser($data);
                             })
@@ -67,16 +70,29 @@ class InvoiceResource extends Resource
                             ->preload()
                             ->live()
                             ->afterStateUpdated(function (Set $set, $state): void {
-                                // Get last invoice for contract
-                                /** @var Invoice|null $lastContractInvoices */
-                                $lastContractInvoices = Invoice::loggedUser()->where('contract_id', $state)->latest('issue_date')->first();
+                                // Get contract
+                                /** @var Contract $contract */
+                                $contract = Contract::findOrFail($state);
 
-                                if ($lastContractInvoices && GeneratorService::getNextInvoiceNumber($lastContractInvoices->number)) {
-                                    // If the last invoice exists, get the next invoice number from it
-                                    $set('number', GeneratorService::getNextInvoiceNumber($lastContractInvoices->number));
-                                } else {
-                                    // Else get initials of the contract name and current year and month
-                                    $set('number', GeneratorService::getInitials(Contract::find($state)->name) . '-' . now()->year . '-' . sprintf('%03d', now()->month));
+                                // Update invoice locale
+                                $set('settings.invoice_locale', $contract->settings->invoiceLocale->value);
+
+                                // Update invoice reverse charge
+                                $set('settings.reverse_charge', $contract->settings->reverseCharge);
+
+                                // Generate invoice number
+                                if (auth()->user()->settings->generatedInvoiceNumber) {
+                                    // Get last invoice for contract
+                                    /** @var Invoice|null $lastContractInvoices */
+                                    $lastContractInvoices = Invoice::loggedUser()->where('contract_id', $state)->latest('issue_date')->first();
+
+                                    if ($lastContractInvoices && GeneratorService::getNextInvoiceNumber($lastContractInvoices->number)) {
+                                        // If the last invoice exists, get the next invoice number from it
+                                        $set('number', GeneratorService::getNextInvoiceNumber($lastContractInvoices->number));
+                                    } else {
+                                        // Else get initials of the contract name and current year and month
+                                        $set('number', GeneratorService::getInitials(Contract::find($state)->name) . '-' . now()->year . '-' . sprintf('%03d', now()->month));
+                                    }
                                 }
                             })
                             ->required()
@@ -87,17 +103,32 @@ class InvoiceResource extends Resource
                                 ->label(trans('label.invoice_number'))
                                 ->required()
                                 ->maxLength(255)
-                                ->unique(modifyRuleUsing: function (Unique $rule, Get $get) {
+                                ->unique(ignoreRecord: true, modifyRuleUsing: function (Unique $rule, Get $get) {
                                     $rule->where('user_id', auth()->id())
                                         ->where('contract_id', $get('contract_id'))
                                         ->where('number', $get('number'));
                                 }),
-                        ]),
+                        ])->visible(fn (?Invoice $record): bool => is_null($record) || $record->status === InvoiceStatusEnum::Draft),
 
                         Split::make([
                             Checkbox::make('prepare_hours')
                                 ->label(trans('label.prepare_hours')),
                         ])->visible(fn (?Invoice $record): bool => is_null($record)),
+                    ]),
+
+                Forms\Components\Fieldset::make('settings')
+                    ->columns(1)
+                    ->label(trans('label.settings'))
+                    ->schema([
+                        Forms\Components\Select::make('settings.invoice_locale')
+                            ->label(trans('label.invoice_locale'))
+                            ->options(LocaleEnum::translatedCases())
+                            ->selectablePlaceholder(false)
+                            ->formatStateUsing(fn (?Invoice $record): string => $record?->settings->invoiceLocale->value ?? LocaleEnum::English->value),
+
+                        Forms\Components\Toggle::make('settings.reverse_charge')
+                            ->label(trans('label.invoice_reverse_charge'))
+                            ->formatStateUsing(fn (?Invoice $record): bool => $record?->settings->reverseCharge ?? false),
                     ]),
             ]);
     }
@@ -217,8 +248,7 @@ class InvoiceResource extends Resource
 
                     // EDIT
                     Tables\Actions\EditAction::make('edit')
-                        ->modalHeading(trans('label.edit_invoice'))
-                        ->hidden(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Issued),
+                        ->modalHeading(trans('label.edit_invoice')),
 
                     // DELETE
                     Tables\Actions\DeleteAction::make(),

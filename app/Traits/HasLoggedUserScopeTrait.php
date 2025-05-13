@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Trait HasLoggedUserScopeTrait
@@ -14,6 +16,11 @@ use Illuminate\Database\Eloquent\Builder;
  */
 trait HasLoggedUserScopeTrait
 {
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     #[Scope]
     protected function loggedUser(Builder $query): void
     {

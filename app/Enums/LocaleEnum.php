@@ -5,7 +5,7 @@ namespace App\Enums;
 
 use App\Traits\HasEnumTranslationsTrait;
 
-enum LanguageEnum: string
+enum LocaleEnum: string
 {
     use HasEnumTranslationsTrait;
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\InvoiceResource\RelationManagers;
 
+use App\Enums\InvoiceStatusEnum;
 use App\Models\Invoice;
 use App\Models\TaskHour;
 use Filament\Forms;
@@ -14,11 +15,16 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @property-read Invoice $ownerRecord
+ * @property Invoice $ownerRecord
  */
 class InvoiceHoursRelationManager extends RelationManager
 {
     protected static string $relationship = 'invoiceHours';
+
+    public function isReadOnly(): bool
+    {
+        return $this->ownerRecord->status === InvoiceStatusEnum::Issued;
+    }
 
     public function form(Form $form): Form
     {
@@ -26,20 +32,20 @@ class InvoiceHoursRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Select::make('task_hour_id')
                     ->required()
-                    ->options(fn() => TaskHour::with('task')
+                    ->options(fn () => TaskHour::with('task')
                         ->currentUser()
                         ->doesntHave('invoice')
-                        ->whereHas('task', fn(Builder $query) => $query->where('contract_id', $this->ownerRecord->contract_id))
+                        ->whereHas('task', fn (Builder $query) => $query->where('contract_id', $this->ownerRecord->contract_id))
                         ->latest('date')
                         ->orderBy('task_id')
                         ->get()
-                        ->map(fn(TaskHour $taskHour) => [
+                        ->map(fn (TaskHour $taskHour) => [
                             'id' => $taskHour->id,
                             'name' => implode(' | ', [
                                 str($taskHour->task->name)->limit(20)->toString(),
                                 $taskHour->date->format('d.m.Y'),
-                                $taskHour->hours . ' hours'
-                            ])
+                                $taskHour->hours . ' hours',
+                            ]),
                         ])
                         ->pluck('name', 'id')
                     ),
@@ -53,7 +59,7 @@ class InvoiceHoursRelationManager extends RelationManager
             ->defaultSort('taskHour.date', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('taskHour.task.name')
-                ->label(trans('label.task'))
+                    ->label(trans('label.task'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('taskHour.date')
                     ->label(trans('label.date'))
