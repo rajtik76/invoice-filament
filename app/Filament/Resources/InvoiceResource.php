@@ -108,7 +108,7 @@ class InvoiceResource extends Resource
                                         ->where('contract_id', $get('contract_id'))
                                         ->where('number', $get('number'));
                                 }),
-                        ]),
+                        ])->visible(fn (?Invoice $record): bool => is_null($record) || $record->status === InvoiceStatusEnum::Draft),
 
                         Split::make([
                             Checkbox::make('prepare_hours')
@@ -248,8 +248,7 @@ class InvoiceResource extends Resource
 
                     // EDIT
                     Tables\Actions\EditAction::make('edit')
-                        ->modalHeading(trans('label.edit_invoice'))
-                        ->hidden(fn (Invoice $record): bool => $record->status === InvoiceStatusEnum::Issued),
+                        ->modalHeading(trans('label.edit_invoice')),
 
                     // DELETE
                     Tables\Actions\DeleteAction::make(),

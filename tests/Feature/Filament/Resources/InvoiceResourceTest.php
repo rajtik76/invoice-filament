@@ -164,3 +164,33 @@ it('create invoice with settings inherited from contract', function () {
         'settings->reverseCharge' => true, // settings from contract
     ]);
 });
+
+it('can edit settings of issued test', function () {
+    $invoice = Invoice::factory()
+        ->recycle($this->user)
+        ->issued()
+        ->create([
+            'number' => 'TEST-12345',
+            'settings' => new InvoiceSettingsValueObject(reverseCharge: false, invoiceLocale: LocaleEnum::English),
+        ]);
+
+    $invoiceNewData = [
+        'settings' => [
+            'invoice_locale' => LocaleEnum::Czech->value,
+            'reverse_charge' => true,
+        ],
+    ];
+
+    livewire(EditInvoice::class, ['record' => $invoice->getKey()])
+        ->fillForm($invoiceNewData)
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    assertDatabaseHas('invoices', [
+        'id' => $invoice->id,
+        'contract_id' => $invoice->contract_id,
+        'number' => 'TEST-12345',
+        'settings->invoiceLocale' => LocaleEnum::Czech,
+        'settings->reverseCharge' => true,
+    ]);
+});

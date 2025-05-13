@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Enums\InvoiceStatusEnum;
 use App\Models\Invoice;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -20,7 +19,7 @@ class InvoicePolicy
 
     public function update(User $user, Invoice $invoice): bool
     {
-        return ($user->id === $invoice->user_id) && ($invoice->status === InvoiceStatusEnum::Draft);
+        return $user->id === $invoice->user_id;
     }
 
     public function delete(User $user, Invoice $invoice): bool
